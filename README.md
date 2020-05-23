@@ -9,6 +9,8 @@ I also want the community to know that we don't have doorstops.  This *is* possi
 This is under heavy development.  I'll be making things more robust and building it out over the next few weeks.
 
 ----------------------------------------------------------------------------------------------------------------------------------------
+<b> What is this? </b>
+
 This project is a standalone, self-contained implementation that takes PicoBrew-XML recipes and interfaces with a PicoBrew Z to perform completely automated brew.   I have been succesfull in brewing recipes start-to-finish with this.
 
 Using Raspberry Pi Hardware we'll:
