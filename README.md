@@ -46,3 +46,7 @@ Software: Go App on Docker
 <b> Alright!  I've got my ingredients loaded and ready to go! </b>
 
 Hold on there Spark - *make sure you use water and do a test batch before brewing that $90 NEIPA Barleywine with Vintage Yeast*
+
+<b> I'm skeptical.  Running this seems like a bad idea.</b>
+
+Did you see my rigorous test harness?  No?  That's because it *is* a bad idea.  Especially right now.  Relax and Enjoy a Homebrew instead.   This question will eventually disappear.
