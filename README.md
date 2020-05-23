@@ -1,0 +1,5 @@
+# Plan B-eer - A Self-Contained Infrastructure for PicoBrew Z
+
+NOTE: THIS IS PROOF-OF-CONCEPT ONLY.  I CANNOT BEGIN TO LIST THE REASONS YOU SHOULDN'T RUN THIS.
+
+
