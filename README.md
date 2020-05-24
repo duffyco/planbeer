@@ -55,10 +55,18 @@ Did you see my rigorous test harness?  No?  That's because it *is* a bad idea.  
 
 ----------------------------------------------------------------------------------------------------------------------------------------
 
-<b> Guide </b>
+<b> Guide - Not hard.  About ~1hr </b>
 
-1. Use Rufus (I use 3.5) and "burn" buster to sdcard. 
-*Link*
+------   Ethernet(wire)     ----------     Wireless    -------------
+Router  <-------------->     Rpi 3/4     <---------->   PicoBrew Z
+------                      ----------                 -------------
+                           OS: Raspbian
+                            Vx: Docker
+                               App
+
+
+1. Use Rufus (https://rufus.ie/ I use the portable version) and "burn" buster to sdcard. 
+https://www.raspberrypi.org/downloads/raspbian/ - (2020-02-13 for the guide).
 
 2. Start it up. Default username/pass is pi/raspberry.  Change the default password:
 <pre> passwd pi </pre>
