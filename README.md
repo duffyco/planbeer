@@ -57,13 +57,14 @@ Did you see my rigorous test harness?  No?  That's because it *is* a bad idea.  
 
 <b> Guide - Not hard.  About ~1hr </b>
 
+<pre>
 ------   Ethernet(wire)     ----------     Wireless    -------------
 Router  <-------------->     Rpi 3/4     <---------->   PicoBrew Z
 ------                      ----------                 -------------
                            OS: Raspbian
                             Vx: Docker
                                App
-
+</pre>
 
 1. Use Rufus (https://rufus.ie/ I use the portable version) and "burn" buster to sdcard. 
 https://www.raspberrypi.org/downloads/raspbian/ - (2020-02-13 for the guide).
