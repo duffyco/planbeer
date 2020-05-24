@@ -79,34 +79,41 @@ Eject the drive safely.
 <pre> passwd pi </pre>
 
 4. Remember your IP.
-<pre> ifconfig 
+<pre>ifconfig 
 eth0: flags=4163<UP,BROADCAST,RUNNING,MULTICAST>  mtu 1500
         inet *192.168.100.26* 
 </pre>
 
+5. Configure your WiFi country
+<pre>sudo raspi-config
+Select "4. Localisation Options"
+Select "I4. Change Wifi Country" --> Set your country
+
 5. Run the following:
-<pre> sudo apt-get update
+<pre>sudo apt-get update
 sudo apt-get -y install git </pre>
 
-4. Clone the repo in the home directory:
+6. Clone the repo in the home directory:
 <pre> git clone https://github.com/duffyco/planbeer.git </pre>
 
-5. Run the WifiSetup:
+7. Run the WifiSetup:
 <pre> cd ~/planbeer/bin </pre>
 <pre> sudo ./setupWifi.sh </pre>
 
-6. This will setup dhcp and hostapd for the RPi 3/4 default Wifi and restart.   Start scanning for a "Plan B" Network.  Password is: 12345678
+8. This will setup dhcp and hostapd for the RPi 3/4 default Wifi and restart.   Start scanning for a "Plan B" Network.  Password is: 12345678
 
-7a.  I'm assuming you've exported all your recipes from Picobrew.  You'll have a directory where they're stored. 
+9.  I'm assuming you've exported all your recipes from Picobrew.  You'll have a directory where they're stored. 
 
-7. In your recipe directory, you can copy recipes over using scp or PSCP.exe (https://www.chiark.greenend.org.uk/~sgtatham/putty/latest.html)
-<pre> pscp -R . pi@192.168.100.26: </pre>
+10. In your recipe directory, you can copy recipes over using scp or PSCP.exe (https://www.chiark.greenend.org.uk/~sgtatham/putty/latest.html)
+<pre> pscp -R . pi@192.168.100.26:planbeer/test/recipes </pre>
 
-8. Build it.
+Also - you could setup Samba: https://pimylifeup.com/raspberry-pi-samba/
+
+11. Build it.
 <pre> cd ~/planbeer/bin
-      ./build.sh </pre>
+./build.sh </pre>
 
-9. Run
+12. Run
 <pre> cd ~/planbeer/bin
       ./run.sh </pre>
 
