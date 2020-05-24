@@ -50,3 +50,58 @@ Hold on there Spark - *make sure you use water and do a test batch before brewin
 <b> I'm skeptical.  Running this seems like a bad idea.</b>
 
 Did you see my rigorous test harness?  No?  That's because it *is* a bad idea.  Especially right now.  Relax and Enjoy a Homebrew instead.   This question will eventually disappear.
+
+<b> What do I do?  OK, ok, ok.  I get it.  But I still want to try it.  </b>
+
+----------------------------------------------------------------------------------------------------------------------------------------
+
+<b> Guide </b>
+
+1. Use Rufus (I use 3.5) and "burn" buster to sdcard. 
+*Link*
+
+2. Start it up. Default username/pass is pi/raspberry.  Change the default password:
+<pre> passwd pi </pre>
+
+2a.  Remember your IP.
+<pre> ifconfig 
+eth0: flags=4163<UP,BROADCAST,RUNNING,MULTICAST>  mtu 1500
+        inet *192.168.100.26* 
+</pre>
+
+3. Run the following:
+<pre> sudo apt-get -y install git openssh-server </pre>
+
+4. Clone the repo in the home directory:
+<pre> cd ~ </pre>
+<pre> git clone https://github.com/duffyco/planbeer.git </pre>
+
+5. Run the WifiSetup:
+<pre> cd ~/planbeer.git/bin </pre>
+<pre> ./setupWifi.sh </pre>
+
+6. This will do some stuff and restart.   Start scanning for a "Plan B" Network.  Password is: 12345678
+
+7a.  I'm assuming you've exported all your recipes from Picobrew.  You'll have a directory where they're stored. 
+
+7. In your recipe directory, you can copy recipes over using scp or PSCP.exe (https://www.chiark.greenend.org.uk/~sgtatham/putty/latest.html)
+<pre> pscp -R . pi@192.168.100.26: </pre>
+
+8. Build it.
+<pre> cd ~/planbeer/bin
+      ./build.sh </pre>
+
+9. Run
+<pre> cd ~/planbeer/bin
+      ./run.sh </pre>
+
+10.  Startup your Z!
+
+To shut things down:
+<pre> cd ~/planbeer/bin
+      ./stop.bin </pre>
+  
+
+
+
+
