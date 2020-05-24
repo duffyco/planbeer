@@ -55,7 +55,7 @@ Did you see my rigorous test harness?  No?  That's because it *is* a bad idea.  
 
 ----------------------------------------------------------------------------------------------------------------------------------------
 
-<b> Guide - Not hard.  About ~1hr </b>
+<b> Guide - Not hard.  About ~1hr.  You'll also create an access point that can be upgraded to listen to *anything* </b>
 
 <pre>
 ------   Ethernet(wire)     ----------     Wireless    -------------
@@ -105,7 +105,12 @@ sudo apt-get -y install git </pre>
 sudo usermod pi -aG docker
 sudo reboot</pre>
 
-8. This will setup dhcp and hostapd for the RPi 3/4 default Wifi and restart.   Start scanning for a "Plan B" Network.  Password is: 12345678
+Check it on reboot by doing a `docker ps`.  It should look like:
+<pre>$ docker ps
+CONTAINER ID        IMAGE               COMMAND             CREATED             STATUS              PORTS               NAMES
+</pre>
+
+8. We've setup dhcp and hostapd for the RPi 3/4 default Wifi and restart. Start scanning for a "Plan B" Network.  Password is: 12345678
 
 9.  I'm assuming you've exported all your recipes from Picobrew.  You'll have a directory where they're stored. 
 
@@ -120,15 +125,10 @@ Also - you could setup Samba: https://pimylifeup.com/raspberry-pi-samba/
 
 12. Run
 <pre> cd ~/planbeer/bin
-      ./run.sh </pre>
+./run.sh </pre>
 
 10.  Startup your Z!
 
 To shut things down:
 <pre> cd ~/planbeer/bin
-      ./stop.bin </pre>
-  
-
-
-
-
+./stop.bin </pre>
