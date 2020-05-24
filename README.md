@@ -55,7 +55,7 @@ Did you see my rigorous test harness?  No?  That's because it *is* a bad idea.  
 
 ----------------------------------------------------------------------------------------------------------------------------------------
 
-<b> Guide - Not hard.  About ~1hr </b>
+<b> Guide - Not hard.  About ~1hr.  You'll also create an access point that can be upgraded to listen to *anything* </b>
 
 <pre>
 ------   Ethernet(wire)     ----------     Wireless    -------------
@@ -79,44 +79,56 @@ Eject the drive safely.
 <pre> passwd pi </pre>
 
 4. Remember your IP.
-<pre> ifconfig 
+<pre>ifconfig 
 eth0: flags=4163<UP,BROADCAST,RUNNING,MULTICAST>  mtu 1500
         inet *192.168.100.26* 
 </pre>
 
+5. Configure your WiFi country
+<pre>sudo raspi-config
+Select "4. Localisation Options"
+Select "I4. Change Wifi Country" --> Set your country</pre>
+
 5. Run the following:
-<pre> sudo apt-get update
+<pre>sudo apt-get update
 sudo apt-get -y install git </pre>
 
-4. Clone the repo in the home directory:
+6. Clone the repo in the home directory:
 <pre> git clone https://github.com/duffyco/planbeer.git </pre>
 
-5. Run the WifiSetup:
+7. Run the WifiSetup:
 <pre> cd ~/planbeer/bin </pre>
 <pre> sudo ./setupWifi.sh </pre>
 
-6. This will setup dhcp and hostapd for the RPi 3/4 default Wifi and restart.   Start scanning for a "Plan B" Network.  Password is: 12345678
+8. Setup Docker:
+<pre> curl -sSL get.docker.com | sh && \
+sudo usermod pi -aG docker
+sudo reboot</pre>
 
-7a.  I'm assuming you've exported all your recipes from Picobrew.  You'll have a directory where they're stored. 
+Check it on reboot by doing a `docker ps`.  It should look like:
+<pre>$ docker ps
+CONTAINER ID        IMAGE               COMMAND             CREATED             STATUS              PORTS               NAMES
+</pre>
 
-7. In your recipe directory, you can copy recipes over using scp or PSCP.exe (https://www.chiark.greenend.org.uk/~sgtatham/putty/latest.html)
-<pre> pscp -R . pi@192.168.100.26: </pre>
+8. We've setup dhcp and hostapd for the RPi 3/4 default Wifi and restart. Start scanning for a "Plan B" Network.  Password is: 12345678
 
-8. Build it.
+9.  I'm assuming you've exported all your recipes from Picobrew.  You'll have a directory where they're stored. 
+
+10. In your recipe directory, you can copy recipes over using scp or PSCP.exe (https://www.chiark.greenend.org.uk/~sgtatham/putty/latest.html)
+<pre> pscp -R . pi@192.168.100.26:planbeer/test/recipes </pre>
+
+Also - you could setup Samba: https://pimylifeup.com/raspberry-pi-samba/
+
+11. Build it.
 <pre> cd ~/planbeer/bin
-      ./build.sh </pre>
+./build.sh </pre>
 
-9. Run
+12. Run
 <pre> cd ~/planbeer/bin
-      ./run.sh </pre>
+./run.sh </pre>
 
 10.  Startup your Z!
 
 To shut things down:
 <pre> cd ~/planbeer/bin
-      ./stop.bin </pre>
-  
-
-
-
-
+./stop.bin </pre>
