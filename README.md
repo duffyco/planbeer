@@ -129,6 +129,17 @@ Also - you could setup Samba: https://pimylifeup.com/raspberry-pi-samba/
 
 10.  Startup your Z!
 
+If all succesfull then you should see the following in the output:
+<pre>2020/05/24 03:25:26 Reading file: /recipes/KentuckyCommon.xml
+2020/05/24 03:25:26 STARTING Routes: VERSION
+2020/05/24 03:25:26 Route Added Index (GET) - /
+2020/05/24 03:25:26 Route Added ZState (PUT) - /Vendors/input.cshtml
+2020/05/24 03:25:26 Route Added RecipeRefListController (POST) - /Vendors/input.cshtml
+2020/05/24 03:25:26 Route Added RecipeController (Get) - /Vendors/input.cshtml
+2020/05/24 03:25:26 Route Added SessionController (POST) - /Vendors/input.cshtml
+2020/05/24 03:25:26 Route Added SessionLogController (POST) - /Vendors/input.cshtml
+</pre>
+
 To shut things down:
 <pre> cd ~/planbeer/bin
 ./stop.bin </pre>
