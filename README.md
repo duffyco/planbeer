@@ -96,7 +96,7 @@ sudo apt-get -y install git </pre>
 6. Clone the repo in the home directory:
 <pre> git clone https://github.com/duffyco/planbeer.git </pre>
 
-7. Run the WifiSetup:
+7. Run the WifiSetup.  We'll setup hostapd/dhcpd/isc-dhcp-server:
 <pre> cd ~/planbeer/bin </pre>
 <pre> sudo ./setupWifi.sh </pre>
 
