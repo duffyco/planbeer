@@ -85,10 +85,10 @@ eth0: flags=4163<UP,BROADCAST,RUNNING,MULTICAST>  mtu 1500
 </pre>
 
 5. Run the following:
-<pre> sudo apt-get -y install git </pre>
+<pre> sudo apt-get update
+      sudo apt-get -y install git </pre>
 
 4. Clone the repo in the home directory:
-<pre> cd ~ </pre>
 <pre> git clone https://github.com/duffyco/planbeer.git </pre>
 
 5. Run the WifiSetup:
