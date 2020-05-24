@@ -69,17 +69,23 @@ Router  <-------------->     Rpi 3/4     <---------->   PicoBrew Z
 1. Use Rufus (https://rufus.ie/ I use the portable version) and "burn" buster to sdcard. 
 https://www.raspberrypi.org/downloads/raspbian/ - (2020-02-13 for the guide).
 
-2. Start it up. Default username/pass is pi/raspberry.  Change the default password:
+2. Go ahead and create an SSH file in the root.  This will activate the SSH server and save you from going downstairs.  I speak from experience.
+
+For Windows users: navigate to D: | Create a Next Text Document | Change the Name to SSH  (no extension)
+
+Eject the drive safely.
+
+3. Start it up. Default username/pass is pi/raspberry.  Change the default password:
 <pre> passwd pi </pre>
 
-2a.  Remember your IP.
+4. Remember your IP.
 <pre> ifconfig 
 eth0: flags=4163<UP,BROADCAST,RUNNING,MULTICAST>  mtu 1500
         inet *192.168.100.26* 
 </pre>
 
-3. Run the following:
-<pre> sudo apt-get -y install git openssh-server </pre>
+5. Run the following:
+<pre> sudo apt-get -y install git </pre>
 
 4. Clone the repo in the home directory:
 <pre> cd ~ </pre>
