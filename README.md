@@ -93,9 +93,9 @@ sudo apt-get -y install git </pre>
 
 5. Run the WifiSetup:
 <pre> cd ~/planbeer/bin </pre>
-<pre> ./setupWifi.sh </pre>
+<pre> sudo ./setupWifi.sh </pre>
 
-6. This will do some stuff and restart.   Start scanning for a "Plan B" Network.  Password is: 12345678
+6. This will setup dhcp and hostapd for the RPi 3/4 default Wifi and restart.   Start scanning for a "Plan B" Network.  Password is: 12345678
 
 7a.  I'm assuming you've exported all your recipes from Picobrew.  You'll have a directory where they're stored. 
 
