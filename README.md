@@ -100,6 +100,11 @@ sudo apt-get -y install git </pre>
 <pre> cd ~/planbeer/bin </pre>
 <pre> sudo ./setupWifi.sh </pre>
 
+8. Setup Docker:
+<pre> curl -sSL get.docker.com | sh && \
+sudo usermod pi -aG docker
+sudo reboot</pre>
+
 8. This will setup dhcp and hostapd for the RPi 3/4 default Wifi and restart.   Start scanning for a "Plan B" Network.  Password is: 12345678
 
 9.  I'm assuming you've exported all your recipes from Picobrew.  You'll have a directory where they're stored. 
