@@ -87,7 +87,7 @@ eth0: flags=4163<UP,BROADCAST,RUNNING,MULTICAST>  mtu 1500
 5. Configure your WiFi country
 <pre>sudo raspi-config
 Select "4. Localisation Options"
-Select "I4. Change Wifi Country" --> Set your country
+Select "I4. Change Wifi Country" --> Set your country</pre>
 
 5. Run the following:
 <pre>sudo apt-get update
