@@ -86,13 +86,13 @@ eth0: flags=4163<UP,BROADCAST,RUNNING,MULTICAST>  mtu 1500
 
 5. Run the following:
 <pre> sudo apt-get update
-      sudo apt-get -y install git </pre>
+sudo apt-get -y install git </pre>
 
 4. Clone the repo in the home directory:
 <pre> git clone https://github.com/duffyco/planbeer.git </pre>
 
 5. Run the WifiSetup:
-<pre> cd ~/planbeer.git/bin </pre>
+<pre> cd ~/planbeer/bin </pre>
 <pre> ./setupWifi.sh </pre>
 
 6. This will do some stuff and restart.   Start scanning for a "Plan B" Network.  Password is: 12345678
