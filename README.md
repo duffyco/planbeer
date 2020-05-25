@@ -135,14 +135,6 @@ Also - you could setup Samba: https://pimylifeup.com/raspberry-pi-samba/
 If all succesfull then you should see the following in the output:
 Generating a RSA private key
 
-.....
-.........................+++++
-.........................................................................+++++
-writing new private key to '/certs/domain.key'
------
-Generating a RSA private key
-....................................+++++
-...........................+++++
 writing new private key to '/certs/server.key'
 -----
 Signature ok
