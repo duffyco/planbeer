@@ -149,7 +149,7 @@ Getting CA Private Key
 2020/05/24 03:25:26 Route Added SessionController (POST) - /Vendors/input.cshtml
 2020/05/24 03:25:26 Route Added SessionLogController (POST) - /Vendors/input.cshtml
 </pre>
-<b>test</b>
+
 13.  Run the intercept
 <pre>cd ~/planbeer/bin
 sudo ./intercept.bin</pre>
