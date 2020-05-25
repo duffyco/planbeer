@@ -155,6 +155,8 @@ sudo ./intercept.bin</pre>
 
 <b>Make sure your Picobrew is using Imperial!</b>
 
+----------------------------------------------------------------------------------------------------------------------------------------
+
 To shut things down:
 <pre>cd ~/planbeer/bin
 ./stop.bin </pre> 
