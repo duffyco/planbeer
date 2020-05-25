@@ -76,7 +76,7 @@ For Windows users: navigate to D: | Create a Next Text Document | Change the Nam
 Eject the drive safely.
 
 3. Start it up. Default username/pass is pi/raspberry.  Change the default password:
-<pre> passwd pi </pre>
+<pre> passwd </pre>
 
 4. Remember your IP.
 <pre>ifconfig 
@@ -97,11 +97,13 @@ sudo apt-get -y install git </pre>
 <pre> git clone https://github.com/duffyco/planbeer.git </pre>
 
 7. Run the WifiSetup.  We'll setup hostapd/dhcpd/isc-dhcp-server:
-<pre> cd ~/planbeer/bin </pre>
-<pre> sudo ./setupWifi.sh </pre>
+<pre> cd ~/planbeer/bin
+sudo ./setupWifi.sh </pre>
+
+<i> This sets up a subnet of 192.168.42.0.  Parameters are at the top of the file.  Adjust as needed.</i>
 
 8. Setup Docker:
-<pre> sudo curl -sSL get.docker.com | sh && \
+<pre>sudo curl -sSL get.docker.com | sh && \
 sudo usermod pi -aG docker
 sudo reboot</pre>
 
@@ -120,11 +122,11 @@ CONTAINER ID        IMAGE               COMMAND             CREATED             
 Also - you could setup Samba: https://pimylifeup.com/raspberry-pi-samba/
 
 11. Build it.
-<pre> cd ~/planbeer/bin
+<pre>cd ~/planbeer/bin
 ./build.sh </pre>
 
 12. Run
-<pre> cd ~/planbeer/bin
+<pre>cd ~/planbeer/bin
 ./run.sh </pre>
 
 10.  Startup your Z!
@@ -141,5 +143,13 @@ If all succesfull then you should see the following in the output:
 </pre>
 
 To shut things down:
-<pre> cd ~/planbeer/bin
+<pre>cd ~/planbeer/bin
 ./stop.bin </pre>
+
+To allow the device to connect to PicoBrew:
+<pre>cd ~/planbeer/bin
+./flowthrough.bin</pre>
+
+To set it back:
+<pre>cd ~/planbeer/bin
+./intercept.bin</pre>
