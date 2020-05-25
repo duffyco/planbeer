@@ -153,7 +153,7 @@ sudo ./intercept.bin</pre>
 
 <b>14.  Startup your Picobrew Z!</b>
 
-<b>Make sure your Picobrew is using Imperial!</b>
+<b>Make sure your Picobrew is using Imperial</b>
 
 ----------------------------------------------------------------------------------------------------------------------------------------
 
