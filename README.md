@@ -125,13 +125,30 @@ Also - you could setup Samba: https://pimylifeup.com/raspberry-pi-samba/
 <pre>cd ~/planbeer/bin
 ./build.sh </pre>
 
+12.  I seem to have to restart the isc-dhcp-server.    
+<pre>sudo service isc-dhcp-server start</pre>
+
 12. Run
 <pre>cd ~/planbeer/bin
 ./run.sh </pre>
 
-10.  Startup your Z!
-
 If all succesfull then you should see the following in the output:
+Generating a RSA private key
+
+.....
+.........................+++++
+.........................................................................+++++
+writing new private key to '/certs/domain.key'
+-----
+Generating a RSA private key
+....................................+++++
+...........................+++++
+writing new private key to '/certs/server.key'
+-----
+Signature ok
+subject=CN = picobrew.com
+Getting CA Private Key
+
 <pre>2020/05/24 03:25:26 Reading file: /recipes/KentuckyCommon.xml
 2020/05/24 03:25:26 STARTING Routes: VERSION
 2020/05/24 03:25:26 Route Added Index (GET) - /
@@ -142,14 +159,21 @@ If all succesfull then you should see the following in the output:
 2020/05/24 03:25:26 Route Added SessionLogController (POST) - /Vendors/input.cshtml
 </pre>
 
+13.  Run the intercept
+<pre>cd ~/planbeer/bin
+sudo ./intercept.bin</pre>
+
+14.  Startup your Picobrew Z!
+
+
 To shut things down:
 <pre>cd ~/planbeer/bin
 ./stop.bin </pre>
 
 To allow the device to connect to PicoBrew:
 <pre>cd ~/planbeer/bin
-./flowthrough.bin</pre>
+sudo ./flowthrough.bin</pre>
 
 To set it back:
 <pre>cd ~/planbeer/bin
-./intercept.bin</pre>
+sudo ./intercept.bin</pre>
