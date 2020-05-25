@@ -158,7 +158,7 @@ sudo ./intercept.bin</pre>
 
 To shut things down:
 <pre>cd ~/planbeer/bin
-./stop.bin </pre>
+./stop.bin </pre> 
 
 To allow the device to connect to PicoBrew:
 <pre>cd ~/planbeer/bin
