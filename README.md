@@ -1,17 +1,17 @@
 # Plan B-eer - A Self-Contained Infrastructure for PicoBrew Z
 
-THIS IS PROOF-OF-CONCEPT ONLY.  I CANNOT BEGIN TO LIST THE REASONS YOU SHOULDN'T RUN THIS.  NO WARRANTY EXPRESS OR IMPLIED.
+THIS IS PROOF-OF-CONCEPT ONLY.  I CANNOT BEGIN TO LIST THE REASONS WHY YOU SHOULDN'T RUN THIS.  NO WARRANTY EXPRESS OR IMPLIED.
 
-Given PicoBrew's recent announcements, I'm hoping this won't be under development long-term.   I *love* their online components and I will continue to use their site as long as it's available.  
+Given PicoBrew's recent announcements, I'm hoping this won't be needed long-term.   I *love* their online components and I will continue to use their site as long as it's available.  
 
-I also want the community to know that we don't have doorstops.  This *is* possible.  Run your electrical, build your area and buy your supplies - these machines here for the long run.
+I also want the community to know that we don't have doorstops.  This *is* possible.  Run your electrical, build your area and buy your supplies - these machines are here for the long run.
 
 This is under development.  I'll be making things more robust and building it out over the next few weeks.
 
 ----------------------------------------------------------------------------------------------------------------------------------------
 <b> What is this? </b>
 
-This project is a standalone, self-contained implementation that takes PicoBrew-XML recipes and interfaces with a PicoBrew Z to perform completely automated brew.   I have been succesfull in brewing recipes start-to-finish with this.
+This project is a standalone, self-contained implementation that takes PicoBrew-XML recipes and interfaces with a PicoBrew Z to perform completely automated brew.   I have been successful in brewing recipes start-to-finish with this.
 
 Using Raspberry Pi Hardware we'll:
 - Build a Wifi Access Point and Attach a Z to it
@@ -47,15 +47,11 @@ Software: Go App on Docker
 
 Hold on there Spark - *make sure you use water and do a test batch before brewing that $90 NEIPA Barleywine with Vintage Yeast*
 
-<b> I'm skeptical.  Running this seems like a bad idea.</b>
-
-Did you see my rigorous test harness?  No?  That's because it *is* a bad idea.  Especially right now.  Relax and Enjoy a Homebrew instead.   This question will eventually disappear.
-
 <b> What do I do?  OK, ok, ok.  I get it.  But I still want to try it.  </b>
 
 ----------------------------------------------------------------------------------------------------------------------------------------
 
-<h2>Guide <h2>
+<h2>Guide</h2>
 <b> Difficulty: Not hard.  Time: ~1hr</b>
 
 <pre>
@@ -156,7 +152,8 @@ Getting CA Private Key
 sudo ./intercept.bin</pre>
 
 <b>14.  Startup your Picobrew Z!</b>
-<b>Make sure your Picobrew is in Imperial Units!</b>
+
+<b>Make sure your Picobrew is using Imperial!</b>
 
 To shut things down:
 <pre>cd ~/planbeer/bin
