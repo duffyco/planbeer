@@ -101,7 +101,7 @@ sudo apt-get -y install git </pre>
 <pre> sudo ./setupWifi.sh </pre>
 
 8. Setup Docker:
-<pre> curl -sSL get.docker.com | sh && \
+<pre> sudo curl -sSL get.docker.com | sh && \
 sudo usermod pi -aG docker
 sudo reboot</pre>
 
