@@ -125,17 +125,16 @@ Also - you could setup Samba: https://pimylifeup.com/raspberry-pi-samba/
 <pre>cd ~/planbeer/bin
 ./build.sh </pre>
 
-12.  I seem to have to restart the isc-dhcp-server.    
+12.  I seem to have to restart the isc-dhcp-server.  You may have to do this on reboot.
 <pre>sudo service isc-dhcp-server start</pre>
 
 12. Run
 <pre>cd ~/planbeer/bin
 ./run.sh </pre>
 
+<pre>
 If all succesfull then you should see the following in the output:
 Generating a RSA private key
-
-writing new private key to '/certs/server.key'
 -----
 Signature ok
 subject=CN = picobrew.com
@@ -155,8 +154,7 @@ Getting CA Private Key
 <pre>cd ~/planbeer/bin
 sudo ./intercept.bin</pre>
 
-14.  Startup your Picobrew Z!
-
+<b>14.  Startup your Picobrew Z!</b>
 
 To shut things down:
 <pre>cd ~/planbeer/bin
