@@ -6,7 +6,7 @@ Given PicoBrew's recent announcements, I'm hoping this won't be under developmen
 
 I also want the community to know that we don't have doorstops.  This *is* possible.  Run your electrical, build your area and buy your supplies - these machines here for the long run.
 
-This is under heavy development.  I'll be making things more robust and building it out over the next few weeks.
+This is under development.  I'll be making things more robust and building it out over the next few weeks.
 
 ----------------------------------------------------------------------------------------------------------------------------------------
 <b> What is this? </b>
@@ -55,7 +55,8 @@ Did you see my rigorous test harness?  No?  That's because it *is* a bad idea.  
 
 ----------------------------------------------------------------------------------------------------------------------------------------
 
-<b> Guide - Not hard.  About ~1hr.  You'll also create an access point that can be upgraded to listen to *anything* </b>
+<h2>Guide <h2>
+<b> Difficulty: Not hard.  Time: ~1hr</b>
 
 <pre>
 ------   Ethernet(wire)     ----------     Wireless    -------------
@@ -155,6 +156,7 @@ Getting CA Private Key
 sudo ./intercept.bin</pre>
 
 <b>14.  Startup your Picobrew Z!</b>
+<b>Make sure your Picobrew is in Imperial Units!</b>
 
 To shut things down:
 <pre>cd ~/planbeer/bin
