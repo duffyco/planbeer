@@ -89,10 +89,10 @@ Super Easy.  Keep refreshing and wait until you see "CREATE_COMPLETE" under the 
 
 ### Please shut this down when done.  It's not expensive (~0.06/hr), but no one wants unexpected bills.  You're on your own with Amazon's Billing Department.
 
-1) [2min] Setup the VPC.  [Launch Stack](https://us-east-2.console.aws.amazon.com/cloudformation/home?region=us-east-2#/stacks/events?stackId=arn%3Aaws%3Acloudformation%3Aus-east-2%3A289398619024%3Astack%2Fvpc%2Fae5ab920-ef1e-11ea-a0db-06a590253d7a&filteringText=&filteringStatus=active&viewNested=true&hideStacks=fwwwlse)
+*1.[2min] Setup the VPC.  [Launch Stack](https://us-east-2.console.aws.amazon.com/cloudformation/home?region=us-east-2#/stacks/events?stackId=arn%3Aaws%3Acloudformation%3Aus-east-2%3A289398619024%3Astack%2Fvpc%2Fae5ab920-ef1e-11ea-a0db-06a590253d7a&filteringText=&filteringStatus=active&viewNested=true&hideStacks=fwwwlse)*
 - Use the defaults.  Click Create Stack.
 
-2) [4min] Setup the Storage.  [Launch Stack](https://console.aws.amazon.com/cloudformation/home#/stacks/create/review?templateURL=https://planbeer-aws-scripts.s3.us-east-2.amazonaws.com/2-aws-planbeer-storage.yaml)
+*1. [4min] Setup the Storage.  [Launch Stack](https://console.aws.amazon.com/cloudformation/home#/stacks/create/review?templateURL=https://planbeer-aws-scripts.s3.us-east-2.amazonaws.com/2-aws-planbeer-storage.yaml)*
 - Stack Name: planbeer-storage
 - Service Name: planbeer
 - Subnet A: <pick one with (A Public)>
@@ -101,7 +101,7 @@ Super Easy.  Keep refreshing and wait until you see "CREATE_COMPLETE" under the 
 
 Next. Create Stack.
 
-3) [10min] Setup the App [Launch Stack](https://console.aws.amazon.com/cloudformation/home#/stacks/create/review?templateURL=https://planbeer-aws-scripts.s3.us-east-2.amazonaws.com/3-aws-planbeer-cluster.yaml)
+*1. [10min] Setup the App [Launch Stack](https://console.aws.amazon.com/cloudformation/home#/stacks/create/review?templateURL=https://planbeer-aws-scripts.s3.us-east-2.amazonaws.com/3-aws-planbeer-cluster.yaml)*
 - Stack Name: planbeer-app
 - Subnet A: <pick one with (A Public)>
 - Subnet B: <pick one with (B Public)>
@@ -111,14 +111,16 @@ Leave everything else.  Next. Next.  Check the "I acknowledge IAM..." Box.  Crea
 
 This will take a while.  Wait for the "CREATE_COMPLETE" under planbeer-app. Go get a coffee.  
 
-4) Once complete look under the "Outputs" Tab and you'll see three URLs:
+*Deploy done*
+
+*1. Once complete look under the "Outputs" Tab and you'll see three URLs: *
 - EndpointServer: Put this one in your router in Step 5
 - EndpointUI: Click it and you'll go to the Plan B website
 - EndpointDatabase: Don't worry about this unless you have to.
 
 You can use the web app to import recipes and sessions via the UI.  
 
-5) To connect the machine you need to configure your router to map picobrew.com to the Server Name (without the 'HTTPS://' and '/'). Each router is different on how to do this.
+*1. To connect the machine you need to configure your router to map picobrew.com to the Server Name (without the 'HTTPS://' and '/'). Each router is different on how to do this. *
 - I use AdvancedTomato and adjust the address under Advanced Settings | DHCP/DNS | Dnsmasq settings 
 
 Alternative [10 min]: <b>If you've got a Windows 10 Laptop </b> it can probably act as a Wifi HotSpot - [Win10 Scripts](/tree/master/support/Win10Hotspot)
@@ -132,36 +134,36 @@ The PlanB Website should appear.   (If you tear down the planbeer-app, you'll ha
 ![Main View](https://github.com/duffyco/planbeerui/blob/master/images/Main.png?raw=true "Main View")
 
 
-6) Join the machine to your network.  Power on the machine and refresh.  Boom!
+*1. Join the machine to your network.  Power on the machine and refresh.  Boom! *
 ![Welcome View](https://github.com/duffyco/planbeerui/blob/master/images/Welcome.png?raw=true "Welcome View")
 
 <hr>
 
-#Shut things down!
+# Shut things down!
 <hr>
 
 
 ## Shutdown Process
-1) Goto aws.amazon.com | Sign in (or My Account -> AWS Management Console) 
+*1. Goto aws.amazon.com | Sign in (or My Account -> AWS Management Console) *
 
-2) Click Services | Find CloudFormation
+*1. Click Services | Find CloudFormation*
 
-3) To remove Planbeer-app -> Click the Dot and then the Delete Button.  
+*1. To remove Planbeer-app -> Click the Dot and then the Delete Button.  *
 
 Planbeer-app is the most costly part.   If you're a fiscal-person - much like the author - you can delete this <b> and not lose any data.</b>  I only tip it up on Brew Days.  You'll have to also update the DNS entry each time however.  This means running Steps 3-5 again.
 
-4) To remove the rest, click the dot next to each and then the Delete Button.
+1. To remove the rest, click the dot next to each and then the Delete Button.
 
 Done.
 
 
 ## Import Pico Data
 
-1) Using the "Export" functions on a Session or Recipe to generate XML/CSV files.
+1. Using the "Export" functions on a Session or Recipe to generate XML/CSV files.
 
-2) First import Recipes by Import File | Upload.  Save when imported.   It will now be visible under Recipes.
+1. First import Recipes by Import File | Upload.  Save when imported.   It will now be visible under Recipes.
 
-3) Next import Session by Import File | Upload and select the machine and recipes.   Save.  This will take some time.
+1. Next import Session by Import File | Upload and select the machine and recipes.   Save.  This will take some time.
 ![Import](https://github.com/duffyco/planbeerui/blob/master/images/Import.png?raw=true "Import View")
 
 ### The app never deletes these files unless you click trash.  It will disappear once imported but will reappear if you delete the session/recipe through the UI.
