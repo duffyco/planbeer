@@ -25,10 +25,10 @@ Anyone can run this, no special hardware required.  Deployable on AWS, it's 30mi
 - Only Desktop supported.  Mobile will probably look funny.
 
 ![Main View](https://github.com/duffyco/picobrewui/images/BrewingView.png?raw=true "Main View")
-![Active Rinse](https://github.com/duffyco/picobrewui/images/ActiveRinse.png?raw=true "Active Rinse")
-![Recipe](https://github.com/duffyco/picobrewui/images/Recipe.png?raw=true "Recipe View")
-![Chart](https://github.com/duffyco/picobrewui/images/Chart.png?raw=true "Chart View")
-![Import Pico Data](https://github.com/duffyco/picobrewui/images/Import.png?raw=true "Import Pico Data")
+[Active Rinse](https://github.com/duffyco/picobrewui/images/ActiveRinse.png?raw=true "Active Rinse")
+[Recipe](https://github.com/duffyco/picobrewui/images/Recipe.png?raw=true "Recipe View")
+[Chart](https://github.com/duffyco/picobrewui/images/Chart.png?raw=true "Chart View")
+[Import Pico Data](https://github.com/duffyco/picobrewui/images/Import.png?raw=true "Import Pico Data")
 
 <hr> 
 
