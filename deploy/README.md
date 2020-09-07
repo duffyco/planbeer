@@ -4,11 +4,11 @@ Based off Widdix AWS scripts - amazing work.  https://github.com/widdix/aws-cf-t
 
 Instructions on Main Page
 
-Order | File | Purpose
-1 | [1-VPC] (https://github.com/widdix/aws-cf-templates/blob/master/vpc/vpc-2azs.yaml) | Networking - Based on the Widdix Cluster
-2 | 2-aws-planbeer-storage.yaml | Storage Layer - Planbeer (3) can be removed without losing data
-3 | 3-aws-planbeer-cluster.yaml | Planbeer App - The App, DB, UI Layer 
-
+| Order | File | Purpose |
+| --- | --- | --- |
+| 1 | vpc-2azs.yaml (https://github.com/widdix/aws-cf-templates/vpc/vpc-2azs.yaml) | Networking - Based on the Widdix Cluster |
+| 2 | 2-aws-planbeer-storage.yaml | Storage Layer - Planbeer (3) can be removed without losing data |
+| 3 | 3-aws-planbeer-cluster.yaml | Planbeer App - The App, DB, UI Layer |
 
 # Running Containers
 
@@ -37,5 +37,10 @@ DNS2 | N/A | Alternate name for Generate certs (should be www.picobrew.com)
 ### CouchDB
 docker run -p 5984:5984 -e COUCHDB_USER=admin -e COUCHDB_PASSWORD=password -v C:/users/local/couchdb/data:/opt/couchdb/data couchdb
 
-## Container Example
-docker run -p 443:443 -p 8080:80 -e PB_ENABLE_TLS=TRUE -e PB_SESSION_PATH=/planbeer/sessions -e PB_RECIPES_PATH=/planbeer/recipes -e PB_DBSERVER=192.168.1.104 -e DNS1=picobrew.com -e DNS2=www.picobrew.com -e PB_CERTS_PATH=/certs -v C:/users/me/downloads/test:/planbeer planbeer:latest 
+### Container Example
+docker run -p 443:443 -p 80:80 -e PB_ENABLE_TLS=TRUE -e PB_SESSION_PATH=/planbeer/sessions -e PB_RECIPES_PATH=/planbeer/recipes -e PB_DBSERVER=192.168.1.104 -e DNS1=picobrew.com -e DNS2=www.picobrew.com -e PB_CERTS_PATH=/certs -v C:/users/me/downloads/test:/planbeer planbeer:latest 
+
+Note: You'll have to loadbalance the "/ui/*" on port to this service.   Otherwise you'll have a collision on port 80 when you run the UI.
+
+### Planbeer UI
+docker run -p 80:80 planbeerui:latest
