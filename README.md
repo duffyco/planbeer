@@ -121,7 +121,7 @@ You can use the web app to import recipes and sessions via the UI.
 <b> 5. To connect the machine you need to configure your router to map picobrew.com to the Server Name (without the 'HTTPS://' and '/'). Each router is different on how to do this. </b>
 - I use AdvancedTomato and adjust the address under Advanced Settings | DHCP/DNS | Dnsmasq settings 
 
-<b> 5a. Alternative [10 min]: </b> If you've got a Windows 10 Laptop it can probably act as a Wifi HotSpot - [Win10 Scripts](/tree/master/support/Win10Hotspot)
+<b> 5a. Alternative [10 min]: </b> If you've got a Windows 10 Laptop it can probably act as a Wifi HotSpot - [Win10 Scripts](https://github.com/duffyco/planbeer/tree/master/support/Win10Hotspot)
 
 To check you've done this correctly: 
 - Click on the EndpointServer link.   
