@@ -156,7 +156,7 @@ The PlanB Website should appear.   (If you tear down the planbeer-app, you'll ha
 
 Planbeer-app is the most costly part.   If you're a fiscal-person - much like the author - you can delete this <b> and not lose any data.</b>  I only tip it up on Brew Days.  You'll have to also update the DNS entry each time however.  This means running Steps 3-5 again.
 
-4. To remove the rest, click the dot next to each and then the Delete Button.
+<b> 4. To remove the rest, click the dot next to each and then the Delete Button. </b>
 
 Done.
 
@@ -165,9 +165,11 @@ Done.
 
 1. Using the "Export" functions on a Session or Recipe to generate XML/CSV files.
 
-1. First import Recipes by Import File | Upload.  Save when imported.   It will now be visible under Recipes.
+1. First import Recipes by Import File | Upload.  Save when imported.   It will now be visible under Recipes and viewable with details.
 
-1. Next import Session by Import File | Upload and select the machine and recipes.   Save.  This will take some time.
+1. Next import Session by Import File | Upload and select the machine and recipes.   Save.  This will take some time.  When finished you'll be able to see the graphs under Brewing.
+
+
 ![Import](https://github.com/duffyco/planbeerui/blob/master/images/Import.png?raw=true "Import View")
 
 <b> The app never deletes these files unless you click trash.  It will disappear once imported but will reappear if you delete the session/recipe through the UI. </b>
