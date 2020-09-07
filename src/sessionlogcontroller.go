@@ -1,30 +1,22 @@
 package main
 
 import (
-	"log" 
-	"encoding/json"
+	"strconv"
+	"time"
 )
 
-func createSessionLogRespMsg( inMsg SessionLogMsg ) SessionLogRespMsg {
+func createSessionLogRespMsg( inMsg SessionLogMsg, token string ) SessionLogRespMsg {
 	var outMsg SessionLogRespMsg
 
-	curSessionID := inMsg.ZSessionID
-	curLogSessionID := 11000000
-	out, err := json.Marshal( &inMsg )
+	sessObj := GetSession( inMsg.ZSessionID )
 
-	if err != nil {
-        panic (err)
-    }
+	CreateSessionLogEntry( 	inMsg, time.Now().Unix() );
 
-	sessionLog[curLogSessionID] = append( sessionLog[curLogSessionID], string( out ) )
+	updateMachineBrewingStatus( token, inMsg.ZSessionID, inMsg.SecondsRemaining, inMsg.ErrorCode, inMsg.PauseReason )
 
-	log.Printf( string( out ) )
-
-	// @TODO: HELP!  ID comes from where
-	outMsg.ID = curLogSessionID
-	outMsg.ZSessionID = curSessionID
-	
-	outMsg.LogDate = "2020-05-05T20:21:02.46"
+	outMsg.ID = int( time.Now().Unix() )
+	outMsg.ZSessionID, _ = strconv.Atoi( sessObj.ID )
+	outMsg.LogDate = time.Now().Format("2006-01-02T15:04:05.000Z07:00")
 	outMsg.ThermoBlockTemp = inMsg.ThermoBlockTemp
 	outMsg.WortTemp = inMsg.WortTemp
 	outMsg.AmbientTemp = inMsg.AmbientTemp
@@ -44,49 +36,4 @@ func createSessionLogRespMsg( inMsg SessionLogMsg ) SessionLogRespMsg {
 	outMsg.NetRecv = inMsg.NetRecv
 	outMsg.NetWait = inMsg.NetWait
 	return outMsg
-}
-
-
-type SessionLogMsg struct {
-	ZSessionID  int `json:"ZSessionID"`
-	ThermoBlockTemp  float32 `json:"ThermoBlockTemp"`
-	WortTemp  float32 `json:"WortTemp"`
-	AmbientTemp  float32 `json:"AmbientTemp"`
-	DrainTemp  float32 `json:"DrainTemp"`
-	TargetTemp  float32 `json:"TargetTemp"`
-	StepName      string    `json:"StepName"`
-	ValvePosition  float32 `json:"ValvePosition"`
-	KegPumpOn  int `json:"KegPumpOn"`
-	DrainPumpOn  int `json:"DrainPumpOn"`
-	PauseReason  int `json:"PauseReason"`
-	ErrorCode  int `json:"ErrorCode"`
-	Rssi  int `json:"rssi"`
-	NetSend  int `json:"netSend"`
-	NetWait  int `json:"netWait"`
-	NetRecv  int `json:"netRecv"` 
-	SecondsRemaining  int `json:"SecondsRemaining"`
-}
-
-type SessionLogRespMsg struct {
-	ID  int `json:"ID"`
-	ZSessionID  int `json:"ZSessionID"`
-	LogDate  string `json:"LogDate"`
-	ThermoBlockTemp  float32 `json:"ThermoBlockTemp"`
-	WortTemp  float32 `json:"WortTemp"`
-	AmbientTemp  float32 `json:"AmbientTemp"`
-	DrainTemp  float32 `json:"DrainTemp"`
-	TargetTemp  float32 `json:"TargetTemp"`
-	ValvePosition  float32 `json:"ValvePosition"`
-	KegPumpOn  bool `json:"KegPumpOn"`
-	DrainPumpOn  bool `json:"DrainPumpOn"`
-	StepName      string    `json:"StepName"`
-	ErrorCode  int `json:"ErrorCode"`
-	PauseReason  int `json:"PauseReason"`
-	Rssi  int `json:"rssi"`
-	NetSend  int `json:"netSend"`
-	NetWait  int `json:"netWait"`
-	NetRecv  int `json:"netRecv"`
-	SecondsRemaining  *string `json:"SecondsRemaining"`
-	StillSessionLog  *string `json:"StillSessionLog"`
-	StillSessionLogID  *string `json:"StillSessionLogID"`
 }

@@ -1,6 +1,6 @@
-	package main
+package main
 
-import ( 
+import (
 	"fmt"
 )
 
@@ -18,15 +18,15 @@ func createRecipeControllerRespMsg( ID int ) RecipeControllerRespMsg {
 
 	var recipeControllerMsg RecipeControllerRespMsg
 
-	if( len(  xmlRecipes) < ID ) {
+	if( len( getRecipes() ) < ID ) {
 		panic( fmt.Errorf("Recipe not found: %d", ID ) )
 	}
 
-	recipe := xmlRecipes[ID]
+	recipe := getRecipe(ID).XmlRecipe
 
 	recipeControllerMsg.ID = ID 
 	recipeControllerMsg.Name = setString( recipe.Name, 19 )
-	recipeControllerMsg.StartWater = recipe.Waters[0].Water.Amount
+	recipeControllerMsg.StartWater = recipe.Waters.Water[0].Amount
 	
 
 	for _, step := range recipe.Zymatic.Steps {
@@ -62,20 +62,4 @@ func toCelcius( fahrenheit int ) int {
 
 func toFahrenheit( celcius int ) int {
 	return celcius * 9 / 5 + 32
-}
-
-type RecipeControllerStepMsg struct {
-	Name  string `json:"Name"`
-	Temp  int `json:"Temp"`
-	Time  int `json:"Time"` 
-	Location  int `json:"Location"`
-	Drain  int `json:"Drain"`
-}
-
-type RecipeControllerRespMsg struct {
-	ID  int `json:"ID"`
-	Name      string    `json:"Name"`
-	StartWater  float32  `json:"StartWater"`
-	TypeCode  string `json:"TypeCode"`
-	Steps []RecipeControllerStepMsg `json:"Steps"`
 }

@@ -1,0 +1,1 @@
+docker run -p 443:443 -p 8080:80 -e PB_ENABLE_TLS=TRUE -e PB_SESSION_PATH=/planbeer/sessions -e PB_RECIPES_PATH=/planbeer/recipes -e PB_DBSERVER=192.168.1.104 -e DNS1=picobrew.com -e DNS2=www.picobrew.com -e PB_CERTS_PATH=/certs -v C:/users/john/downloads/test:/planbeer planbeer:latest

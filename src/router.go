@@ -13,12 +13,20 @@ func NewRouter() *mux.Router {
 		handler = route.HandlerFunc
 		handler = Logger(handler, route.Name)
 
+		if( route.Query == "" ) {
+			router.
+			Name(route.Name).
+			Methods(route.Method).
+			Path(route.Pattern).
+			Handler(handler)
+		} else {
 		router.
 			Name(route.Name).
 			Methods(route.Method).
 			Path(route.Pattern).
 			Queries( route.Query, route.Value).
 			Handler(handler)
+		}
 
 	}
 	return router

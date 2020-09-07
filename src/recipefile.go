@@ -1,14 +1,17 @@
 package main
 
 import (
-	"encoding/xml"
-	"io/ioutil"
-	"golang.org/x/net/html/charset"
 	"bytes"
+	"encoding/xml"
+	"errors"
+	"io/ioutil"
+	"log"
+
+	"golang.org/x/net/html/charset"
 )
 
-func RecipeFile ( filename string ) XmlRecipe {
-    data, _ := ioutil.ReadFile(filename)
+func RecipeFile ( filename string ) (XmlRecipe, error) {
+	data, _ := ioutil.ReadFile(filename)
 
 	reader := bytes.NewReader( data )
 	decoder := xml.NewDecoder( reader )
@@ -17,21 +20,20 @@ func RecipeFile ( filename string ) XmlRecipe {
 	recipesXml := &XmlRecipeWrapper{}
 	err := decoder.Decode( &recipesXml )
 	if (err != nil) {
-		panic( err )
+		log.Printf( "Unable to import %s", filename );
+		return XmlRecipe{}, errors.New( err.Error() );
 	} 
 
-	return recipesXml.Recipe
+	print( "Read File: " + recipesXml.Recipe.Name)
+	return recipesXml.Recipe, nil
 }
 
 func ConvertToRecipe( id int, rec XmlRecipe ) Recipe {
 	var recipe Recipe 
 
-	recipe.Abv = -1
-	recipe.ID = id
-	recipe.Ibu = -1
-	recipe.Kind = 0
-	recipe.Name = rec.Name
-	recipe.Uri = nil
+	recipe.ID = rec.Name;
+	recipe.RecipeID = id;
+	recipe.XmlRecipe = rec;
 
 	return recipe
 }
@@ -71,9 +73,9 @@ type XmlRecipe struct {
 	Zymatic  XmlZymatic	`xml:"ZYMATIC"`
 	Mash XmlMash `xml:"MASH"`
 	Hops      XmlHopWrapper `xml:"HOPS"`
-	Waters []XmlWaterWrapper  `xml:"WATERS"`
-	Fermentables []XmlFermentableWrapper `xml:"FERMENTABLES"`
-	Yeasts []XmlYeastWrapper `xml:"YEASTS"`
+	Waters XmlWaterWrapper  `xml:"WATERS"`
+	Fermentables XmlFermentableWrapper `xml:"FERMENTABLES"`
+	Yeasts XmlYeastWrapper `xml:"YEASTS"`
 	KegSmartTag FermSteps `xml:"KEGSMART"` 
 	Name      string `xml:"NAME"`
 }
@@ -90,8 +92,8 @@ type XmlStyle struct {
 	FBMax      float32 `xml:"FG_MAX"`
 	IBUMin      int `xml:"IBU_MIN"`
 	IBUMax      int `xml:"IBU_MAX"`
-	ColorMin      int `xml:"COLOR_MIN"`
-	ColorMax      int `xml:"COLOR_MAX"`
+	ColorMin      float32 `xml:"COLOR_MIN"`
+	ColorMax      float32 `xml:"COLOR_MAX"`
 }
 
 type XmlEquipment struct {
@@ -133,7 +135,7 @@ type XmlMashWrapper struct {
 }
 
 type XmlHopWrapper struct {
-	Hop XmlHop `xml:"HOP"`
+	Hop []XmlHop `xml:"HOP"`
 }
 
 type XmlHop struct {
@@ -146,7 +148,7 @@ type XmlHop struct {
 }
 
 type XmlWaterWrapper struct {
-	Water XmlWater `xml:"WATER"`
+	Water []XmlWater `xml:"WATER"`
 }
 
 type XmlWater struct {
@@ -155,7 +157,7 @@ type XmlWater struct {
 }
 
 type XmlFermentableWrapper struct {
-	Fermentable XmlFermentable `xml:"FERMENTABLE"`
+	Fermentable []XmlFermentable `xml:"FERMENTABLE"`
 }
 
 type XmlFermentable struct {
@@ -169,7 +171,7 @@ type XmlFermentable struct {
 
 
 type XmlYeastWrapper struct {
-	Yeast XmlYeast `xml:"YEAST"`
+	Yeast []XmlYeast `xml:"YEAST"`
 }
 
 type XmlYeast struct {

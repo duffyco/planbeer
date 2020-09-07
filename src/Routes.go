@@ -17,7 +17,7 @@ type Route struct {
 type Routes []Route
 
 func init() {
-	log.Printf("STARTING Routes: 12")
+	log.Printf("STARTING Planbeer Server: " + VERSION)
 	for _, route := range routes {
 		log.Printf("Route Added %s (%s) - %s", route.Name, route.Method, route.Pattern)
 	}
@@ -26,7 +26,7 @@ func init() {
 var routes = Routes{
 	Route{
 		"Index",
-		"GET",
+		"Get",
 		"/",
 		"",
 		"",
@@ -71,6 +71,142 @@ var routes = Routes{
 		"type",
 		"ZSessionLog",
 		PicoBrewSessionLogController,
+	},
+	Route{
+		"UI-RecipeList",
+		"GET",
+		"/ui/ListRecipes",
+		"",
+		"",
+		ListRecipes,
+	},
+	Route{
+		"UI-MachineList",
+		"GET",
+		"/ui/ListMachines",
+		"",
+		"",
+		ListMachines,
+	},
+	Route{
+		"UI-SessionList",
+		"GET",
+		"/ui/ListSessions",
+		"",
+		"",
+		ListSessions,
+	},
+	Route{
+		"UI-GetSession",
+		"GET",
+		"/ui/GetSession/{id}",
+		"",
+		"",
+		GetSessionHandler,
+	},
+	Route{
+		"UI-DeleteSession",
+		"GET",
+		"/ui/DeleteSession/{id}",
+		"",
+		"",
+		DeleteSessionHandler,
+	},
+	Route{
+		"UI-GetRecipe",
+		"GET",
+		"/ui/GetRecipe/{id}",
+		"",
+		"",
+		GetRecipe,
+	},
+	Route{
+		"UI-DeleteRecipe",
+		"GET",
+		"/ui/DeleteRecipe/{id}",
+		"",
+		"",
+		DeleteRecipeHandler,
+	},
+	Route{
+		"UI-GetLogs",
+		"GET",
+		"/ui/GetLogs/{id}",
+		"",
+		"",
+		GetLogs,
+	},
+	Route{
+		"UI-GetImportableItems",
+		"GET",
+		"/ui/GetImportableItems",
+		"",
+		"",
+		GetImportableItems,
+	},
+	Route{
+		"UI-GetLogs",
+		"GET",
+		"/ui/GetLogs/{id}",
+		"",
+		"",
+		GetLogs,
+	},
+	Route{
+		"UI-ImportSession",
+		"POST",
+		"/ui/ImportSession/",
+		"",
+		"",
+		ImportSession,
+	},	
+	Route{
+		"UI-ImportRecipe",
+		"POST",
+		"/ui/ImportRecipe/{name}",
+		"",
+		"",
+		ImportRecipe,
+	},
+	Route{
+		"UI-DeleteImportableSession",
+		"GET",
+		"/ui/DeleteImportableSession/{id}",
+		"",
+		"",
+		DeleteImportableSessionHandler,
+	},	
+	Route{
+		"UI-DeleteImportableRecipe",
+		"GET",
+		"/ui/DeleteImportableRecipe/{id}",
+		"",
+		"",
+		DeleteImportableRecipeHandler,
+	},
+	Route{
+		"UI-ImportSession",
+		"POST",
+		"/ui/UploadFiles/",
+		"",
+		"",
+		UploadFiles,
+	},	
+	Route{
+		"UI-UpdateRecipe",
+		"POST",
+		"/ui/UpdateRecipe/{id}",
+		"",
+		"",
+		UpdateRecipeFromHeader,
+	},			
+	Route{
+		"UI-DeleteMachine",
+		"GET",
+		"/ui/DeleteMachine/{token}",
+		"",
+		"",
+		DeleteMachineHandler,
 	},
 	/*
 		Route{

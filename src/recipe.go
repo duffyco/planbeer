@@ -1,35 +1,34 @@
 package main
 
 type Recipe struct {
-	ID int
-	Name string
-	Kind int
-	Uri *string
-	Abv int 
-	Ibu int
+	ID        string    `json:"_id"`
+	RecipeID  int       `json:"recipeID"`
+	XmlRecipe XmlRecipe `json:"XmlRecipe"`
+	Synced    bool      `json:"synced"`
 }
 
-func NewRecipe( inId int, inName string) Recipe {
-	recipe := Recipe{}
-	recipe.ID = inId
-	recipe.Name = inName
-	recipe.Kind = 0
-	recipe.Uri = nil
-	recipe.Abv = -1
-	recipe.Ibu = -1
+func convertDBRecipeToRecipe(dbo RecipeDBO) Recipe {
+	var retRecipe Recipe
 
-	return recipe
+	retRecipe.RecipeID = dbo.RecipeID
+	retRecipe.ID = dbo.ID
+	retRecipe.XmlRecipe = dbo.XmlRecipe
+	retRecipe.Synced = dbo.Synced
+
+	return retRecipe
 }
 
-func GetRecipeDescription( rec Recipe ) RecipeDescription {
-	var ret RecipeDescription;
+func convertRecipeToDBRecipe(rec Recipe) RecipeDBO {
+	var retRecipe RecipeDBO
 
-	ret.Abv = rec.Abv
-	ret.ID = rec.ID
-	ret.Ibu = rec.Ibu
-	ret.Kind = rec.Kind
-	ret.Name = rec.Name
-	ret.Uri = rec.Uri
+	retRecipe.RecipeID = rec.RecipeID
+	retRecipe.ID = rec.ID
+	retRecipe.XmlRecipe = rec.XmlRecipe
+	retRecipe.Synced = rec.Synced
 
-	return ret;
+	return retRecipe
+}
+
+func CalculateDurationFromRecipe(recipe Recipe) int {
+	return 999999
 }

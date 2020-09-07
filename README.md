@@ -1,30 +1,58 @@
-# Plan B-eer - A Self-Contained Infrastructure for PicoBrew Z
+# Plan B-eer - A Self-Contained Infrastructure for PicoBrew Z (AWS/Docker)
 
-THIS IS PROOF-OF-CONCEPT ONLY.  I CANNOT BEGIN TO LIST THE REASONS WHY YOU SHOULDN'T RUN THIS.  NO WARRANTY EXPRESS OR IMPLIED.
+No specialized hardware.  If you have a Windows Machine with Wifi, you can probably run this inside an hour.
 
-Given PicoBrew's recent announcements, I'm hoping this won't be needed long-term.   I *love* their online components and I will continue to use their site as long as it's available.  
+<b> Latest Release: 0.9 ALPHA </b>
 
-I also want the community to know that we don't have doorstops.  This *is* possible.  Run your electrical, build your area and buy your supplies - these machines are here for the long run.
+It's been quiet for a while, but time for a new release.   It's still Alpha.  PLEASE test before running something important on it.  Some brave souls are running the previous release with quite positive results.   
 
-This is under development.  I'll be making things more robust and building it out over the next few weeks.
+Anyone can run this, no special hardware required.  Deployable on AWS, it's 30min gate-to-gate from start to machine on.
 
-----------------------------------------------------------------------------------------------------------------------------------------
+<b> This release features: </b>
+- Ability to import Recipes and Sessions from PicoBrew
+- Tie imported items to Machines
+- Brews all seem to work (and update in UI)
+- Graphs and Recipe view 
+- Full web app with Database Storage 
+- Easy deploy to AWS.
+
+<b> Missing Features </b>
+- Set Machine to Use Imperial
+- You can't edit/create recipes
+- It isn't secure by default
+- It builds on ARM/RPi, but no multi-platform images yet.
+- There are bugs.  It's designed for refresh/retry.
+- Only Desktop supported.  Mobile will probably look funny.
+
+![Main View](https://github.com/duffyco/picobrewui/images/BrewingView.png?raw=true "Main View")
+![Active Rinse](https://github.com/duffyco/picobrewui/images/ActiveRinse.png?raw=true "Active Rinse")
+![Recipe](https://github.com/duffyco/picobrewui/images/Recipe.png?raw=true "Recipe View")
+![Chart](https://github.com/duffyco/picobrewui/images/Chart.png?raw=true "Chart View")
+![Import Pico Data](https://github.com/duffyco/picobrewui/images/Import.png?raw=true "Import Pico Data")
+
+<hr> 
+
+<b> The Plan </b>
+
+I'll be adding some features I felt Picobrew sorely missed first and then starting building out further.  
+
+My background is InfoSec/AI.  My plans are to use this for my homebrewing along with using this codebase for demonstrations.  AWS Cost Reduction will also happen (it'll get cheaper).  
+
+1.0 is targeted towards the end-of-year.  
+
+<hr>
+
 <b> What is this? </b>
 
 This project is a standalone, self-contained implementation that takes PicoBrew-XML recipes and interfaces with a PicoBrew Z to perform completely automated brew.   I have been successful in brewing recipes start-to-finish with this.
-
-Using Raspberry Pi Hardware we'll:
-- Build a Wifi Access Point and Attach a Z to it
-- Redirect the Access Point's traffic to a Docker Container
-- Build a Docker Container that runs software that allows the Z to perform tasks
 
 <b> Implemented Functionality </b>
 
 The following appear to work:
 - Starts Up / Lists Recipes
 - Recipe (with Multi-step Mash, Boil and Whirlpool.  All 4-adjuncts can be used)
-- Coffee (Seems to work with all formats?)
-- Sous Vide (Seems to work)
+- Coffee (Works)
+- Sous Vide (Works)
 - Rinse (Works)
 - Clean (Works)
 - Circulate (Works)
@@ -37,134 +65,93 @@ The following appear to work:
 - Group Brewing
 - *Only 0.0.116 Firmware is supported*
 
-<b> What do I need? </b>
+<hr>
+<b> AWS Deploy </b>
 
-Hardware: Raspberry PI (Tested on v3 & v4 - with the internal RPi Wifi)
-OS: Raspbian Buster
-Software: Go App on Docker 
+You'll need to click these three scripts <b> in order </b>.  I'd also recommend an <a href="https://aws.amazon.com">AWS account </a>.  Free Tier supports this (it still costs money, but less).
 
-<b> Alright!  I've got my ingredients loaded and ready to go! </b>
+It's broken apart into three phases.   This allows us to uninstall the app (and save $) without losing the data.  
 
-Hold on there Spark - *make sure you use water and do a test batch before brewing that $90 NEIPA Barleywine with Vintage Yeast*
+Super Easy.  25min total.  Keep refreshing and wait until you see "CREATE_COMPLETE" under the Stack
 
-<b> What do I do?  OK, ok, ok.  I get it.  But I still want to try it.  </b>
+<b> Please shut this down when done.  It's not expensive (~0.06/hr), but no one wants unexpected bills.  You're on your own with Amazon's Billing Department.</b>
 
-----------------------------------------------------------------------------------------------------------------------------------------
+1) [2min] Setup the VPC.  <Launch Stack>
+- Use the defaults.  Click Create Stack.
+[Launch Stack] (https://us-east-2.console.aws.amazon.com/cloudformation/home?region=us-east-2#/stacks/events?stackId=arn%3Aaws%3Acloudformation%3Aus-east-2%3A289398619024%3Astack%2Fvpc%2Fae5ab920-ef1e-11ea-a0db-06a590253d7a&filteringText=&filteringStatus=active&viewNested=true&hideStacks=fwwwlse)
 
-<h2>Guide</h2>
-<b> Difficulty: Not hard.  Time: ~1hr</b>
+2) [4min] Setup the Storage.  <Launch Stack>
+- Stack Name: planbeer-storage
+- Service Name: planbeer
+- Subnet A: <pick one with (A Public)>
+- Subnet B: <pick one with (B Public)>
+- VPC: <pick one with 10.0.0.0/16>
 
-<pre>
-------   Ethernet(wire)     ----------     Wireless    -------------
-Router  <-------------->     Rpi 3/4     <---------->   PicoBrew Z
-------                      ----------                 -------------
-                           OS: Raspbian
-                            Vx: Docker
-                               App
-</pre>
+Next. Create Stack.
+[Launch Stack] (https://console.aws.amazon.com/cloudformation/home#/stacks/create/review?templateURL=https://planbeer-aws-scripts.s3.us-east-2.amazonaws.com/2-aws-planbeer-storage.yaml)
 
-1. Use Rufus (https://rufus.ie/ I use the portable version) and "burn" buster to sdcard. 
-https://www.raspberrypi.org/downloads/raspbian/ - (2020-02-13 for the guide).
 
-2. Go ahead and create an SSH file in the root.  This will activate the SSH server and save you from going downstairs.  I speak from experience.
+3) [10min] Setup the App <Launch Stack>
+- Stack Name: planbeer-app
+- Subnet A: <pick one with (A Public)>
+- Subnet B: <pick one with (B Public)>
+- VPC: <pick one with 10.0.0.0/16>
 
-For Windows users: navigate to D: | Create a Next Text Document | Change the Name to SSH  (no extension)
+Leave everything else.  Next. Next.  Check the "I acknowledge IAM..." Box.  Create Stack.
+[Launch Stack](https://console.aws.amazon.com/cloudformation/home#/stacks/create/review?templateURL=https://planbeer-aws-scripts.s3.us-east-2.amazonaws.com/3-aws-planbeer-cluster.yaml)
 
-Eject the drive safely.
+This will take a while.  Wait for the "CREATE_COMPLETE" under planbeer-app. Go get a coffee.  
 
-3. Start it up. Default username/pass is pi/raspberry.  Change the default password:
-<pre> passwd </pre>
+4) Once complete look under the "Outputs" Tab and you'll see three URLs:
+- EndpointServer: Put this one in your router in Step 5
+- EndpointUI: Click it and you'll go to the Plan B website
+- EndpointDatabase: Don't worry about this unless you have to.
 
-4. Remember your IP.
-<pre>ifconfig 
-eth0: flags=4163<UP,BROADCAST,RUNNING,MULTICAST>  mtu 1500
-        inet *192.168.100.26* 
-</pre>
+You can use the web app to import recipes and sessions via the UI.  
 
-5. Configure your WiFi country
-<pre>sudo raspi-config
-Select "4. Localisation Options"
-Select "I4. Change Wifi Country" --> Set your country</pre>
+5) To connect the machine you need to configure your router DNS.  I can't provide much help here.  You need to set the router to mapping picobrew.com to the Server Name (without the 'HTTPS://' and '/').
+- I use AdvancedTomato and adjust the address under Advanced Settings | DHCP/DNS | Dnsmasq settings 
 
-5. Run the following:
-<pre>sudo apt-get update
-sudo apt-get -y install git </pre>
+[10 min] <b>If you've got a Windows 10 Laptop </b> it can probably act as a Wifi HotSpot - [Win10 Scripts] (/bin/Win10Hotspot)
 
-6. Clone the repo in the home directory:
-<pre> git clone https://github.com/duffyco/planbeer.git </pre>
+To check you've done this correctly: 
+- Click on the EndpointServer link.   
+- Click past the "Untrusted Error".
+- Click on the UI Located Here Link.
 
-7. Run the WifiSetup.  We'll setup hostapd/dhcpd/isc-dhcp-server:
-<pre> cd ~/planbeer/bin
-sudo ./setupWifi.sh </pre>
+The PlanB Website should appear.   (If you tear down the planbeer-app, you'll have to re-do this when you tip-it back up.)
+![Main View](https://github.com/duffyco/picobrewui/images/Main.png?raw=true "Main View")
 
-<i> This sets up a subnet of 192.168.42.0.  Parameters are at the top of the file.  Adjust as needed.</i>
 
-8. Setup Docker:
-<pre>sudo curl -sSL get.docker.com | sh && \
-sudo usermod pi -aG docker
-sudo reboot</pre>
+6) Join the machine to your network.  Power on the machine and refresh.  Boom!
+![Welcome View](https://github.com/duffyco/picobrewui/images/Welcome.png?raw=true "Welcome View")
 
-Check it on reboot by doing a `docker ps`.  It should look like:
-<pre>$ docker ps
-CONTAINER ID        IMAGE               COMMAND             CREATED             STATUS              PORTS               NAMES
-</pre>
+<hr>
 
-8. We've setup dhcp and hostapd for the RPi 3/4 default Wifi and restart. Start scanning for a "Plan B" Network.  Password is: 12345678
 
-9.  I'm assuming you've exported all your recipes from Picobrew.  You'll have a directory where they're stored. 
 
-10. In your recipe directory, you can copy recipes over using scp or PSCP.exe (https://www.chiark.greenend.org.uk/~sgtatham/putty/latest.html)
-<pre> pscp -R . pi@192.168.100.26:planbeer/test/recipes </pre>
+<b>Shut things down!   </b>
 
-Also - you could setup Samba: https://pimylifeup.com/raspberry-pi-samba/
+<hr>
+<b> Shutdown </b>
+1) Goto aws.amazon.com | Sign in (or My Account -> AWS Management Console) 
+2) Click Services | Find CloudFormation
+3) To remove Planbeer-app -> Click the Dot and then the Delete Button.  
 
-11. Build it.
-<pre>cd ~/planbeer/bin
-./build.sh </pre>
+Planbeer-app is the most costly part.   If you're a fiscal-person - much like the author - you can delete this <b> and not lose any data.</b>  I only tip it up on Brew Days.  You'll have to also update the DNS entry each time however.  This means running Steps 3-5 again.
 
-12.  I seem to have to restart the isc-dhcp-server.  You may have to do this on reboot.
-<pre>sudo service isc-dhcp-server start</pre>
+4) To remove the rest, click the dot next to each and then the Delete Button.
 
-12. Run
-<pre>cd ~/planbeer/bin
-./run.sh </pre>
+Done.
 
-<pre>
-If all succesfull then you should see the following in the output:
-Generating a RSA private key....+++...
------
-Signature ok
-subject=CN = picobrew.com
-Getting CA Private Key
 
-2020/05/24 03:25:26 Reading file: /recipes/KentuckyCommon.xml
-2020/05/24 03:25:26 STARTING Routes: VERSION
-2020/05/24 03:25:26 Route Added Index (GET) - /
-2020/05/24 03:25:26 Route Added ZState (PUT) - /Vendors/input.cshtml
-2020/05/24 03:25:26 Route Added RecipeRefListController (POST) - /Vendors/input.cshtml
-2020/05/24 03:25:26 Route Added RecipeController (Get) - /Vendors/input.cshtml
-2020/05/24 03:25:26 Route Added SessionController (POST) - /Vendors/input.cshtml
-2020/05/24 03:25:26 Route Added SessionLogController (POST) - /Vendors/input.cshtml
-</pre>
+## Import Pico Data
 
-13.  Run the intercept
-<pre>cd ~/planbeer/bin
-sudo ./intercept.bin</pre>
+1) Using the "Export" functions on a Session or Recipe to generate XML/CSV files.
 
-<b>14.  Startup your Picobrew Z!</b>
+2) First import Recipes by Import File | Upload.  Save when imported.   It will now be visible under Recipes.
 
-<b>Make sure your Picobrew is using Imperial</b>
+3) Next import Session by Import File | Upload and select the machine and recipes.   Save.  This will take some time.
+![Import](https://github.com/duffyco/picobrewui/images/Import.png?raw=true "Import View")
 
-----------------------------------------------------------------------------------------------------------------------------------------
-
-To shut things down:
-<pre>cd ~/planbeer/bin
-./stop.bin </pre> 
-
-To allow the device to connect to PicoBrew:
-<pre>cd ~/planbeer/bin
-sudo ./flowthrough.bin</pre>
-
-To set it back:
-<pre>cd ~/planbeer/bin
-sudo ./intercept.bin</pre>
+### The app never deletes these files unless you click trash.  It will disappear once imported but will reappear if you delete the session/recipe through the UI.

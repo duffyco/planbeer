@@ -1,0 +1,656 @@
+AWSTemplateFormatVersion: 2010-09-09
+Description: An example CloudFormation template for Fargate.
+Parameters:
+  VPC:
+    Type: 'AWS::EC2::VPC::Id'
+  SubnetA:
+    Type: 'AWS::EC2::Subnet::Id'
+  SubnetB:
+    Type: 'AWS::EC2::Subnet::Id'
+  AccessIP:
+    Type: String
+    Default: 0.0.0.0/0  
+  ServiceName:
+    Type: String
+    Default: planbeer
+  StorageStack:
+    Type: String
+    Default: planbeer-storage
+Resources:
+  Cluster:
+    Type: 'AWS::ECS::Cluster'
+    Properties:
+      ClusterName: !Join 
+        - ''
+        - - !Ref ServiceName
+          - Cluster
+    Metadata:
+      'AWS::CloudFormation::Designer':
+        id: e7be387f-4938-4e7d-ad50-30ab50797342
+  TaskDefinitionPlanBeerUI:
+    Type: 'AWS::ECS::TaskDefinition'
+    DependsOn: LogGroup
+    Properties:
+      Family: !Join 
+        - ''
+        - - !Ref ServiceName
+          - TaskDefinitionPlanBeerUI
+      NetworkMode: awsvpc
+      RequiresCompatibilities:
+        - FARGATE
+      Cpu: 256
+      Memory: 0.5GB
+      ExecutionRoleArn: !Ref ExecutionRole
+      TaskRoleArn: !Ref TaskRole
+      ContainerDefinitions:
+        - Name: PlanbeerUI
+          Image: 'planbeer/planbeerui:latest'
+          PortMappings:
+            - ContainerPort: 80
+              HostPort: 80
+              Protocol: tcp
+          Environment:
+            - Name: "EXT_DNS_NAME"
+              Value: !GetAtt LoadBalancerNetwork.DNSName
+          LogConfiguration:
+            LogDriver: awslogs
+            Options:
+              awslogs-region: !Ref 'AWS::Region'
+              awslogs-group: !Ref LogGroup
+              awslogs-stream-prefix: ecs
+    Metadata:
+      'AWS::CloudFormation::Designer':
+        id: a5664fb6-e36f-48c1-9f35-e694f10d92c4
+  TaskDefinitionPlanBeer:
+    Type: 'AWS::ECS::TaskDefinition'
+    DependsOn: LogGroup
+    Properties:
+      Family: !Join 
+        - ''
+        - - !Ref ServiceName
+          - TaskDefinitionPlanBeer
+      NetworkMode: awsvpc
+      RequiresCompatibilities:
+        - FARGATE
+      Cpu: 512
+      Memory: 1GB
+      ExecutionRoleArn: !Ref ExecutionRole
+      TaskRoleArn: !Ref TaskRole
+      Volumes:
+        - Name: planbeerdata
+          EFSVolumeConfiguration:
+            FileSystemId:  {'Fn::ImportValue': !Sub '${StorageStack}-EFSVolumePlanBeer'}
+            TransitEncryption: ENABLED   
+            AuthorizationConfig:
+              AccessPointId: {'Fn::ImportValue': !Sub '${StorageStack}-EFSAccessPointAppData'}            
+      ContainerDefinitions:
+        - Name: Planbeer
+          Image: 'planbeer/planbeer:latest'
+          PortMappings:
+            - ContainerPort: 80
+              HostPort: 80
+              Protocol: tcp
+            - ContainerPort: 443
+              HostPort: 443
+              Protocol: tcp
+          MountPoints: 
+            - SourceVolume: "planbeerdata"
+              ContainerPath: "/planbeer"
+          Environment:
+            - Name: "DNS1"
+              Value: "picobrew.com"
+            - Name: "DNS2"
+              Value: "www.picobrew.com"   
+            - Name: "PB_CERTS_PATH"
+              Value: "/planbeer/certs"                          
+            - Name: "PB_DBSERVER"
+              Value: !GetAtt LoadBalancerNetwork.DNSName
+            - Name: "PB_ENABLE_TLS"
+              Value: "TRUE"
+          LogConfiguration:
+            LogDriver: awslogs
+            Options:
+              awslogs-region: !Ref 'AWS::Region'
+              awslogs-group: !Ref LogGroup
+              awslogs-stream-prefix: ecs
+    Metadata:
+      'AWS::CloudFormation::Designer':
+        id: 5b1af99a-b570-411b-9f2f-ba641b353bb5
+  TaskDefinitionCouchDB:
+    Type: 'AWS::ECS::TaskDefinition'
+    DependsOn: LogGroup
+    Properties:
+      Family: !Join 
+        - ''
+        - - !Ref ServiceName
+          - TaskDefinitionCouchDB
+      NetworkMode: awsvpc
+      RequiresCompatibilities:
+        - FARGATE
+      Cpu: 512
+      Memory: 1GB
+      ExecutionRoleArn: !Ref ExecutionRole
+      TaskRoleArn: !Ref TaskRole
+      Volumes:
+        - Name: dbdata
+          EFSVolumeConfiguration:
+            FileSystemId:  {'Fn::ImportValue': !Sub '${StorageStack}-EFSVolumePlanBeer'}
+            TransitEncryption: ENABLED   
+            AuthorizationConfig:
+              AccessPointId: {'Fn::ImportValue': !Sub '${StorageStack}-EFSAccessPointDBData'}
+      ContainerDefinitions:
+        - Name: CouchDB
+          Image: couchdb
+          PortMappings:
+            - ContainerPort: 5984
+              HostPort: 5984
+              Protocol: tcp
+          MountPoints: 
+            - SourceVolume: "dbdata"
+              ContainerPath: "/opt/couchdb/data"
+          Environment:
+            - Name: "COUCHDB_PASSWORD"
+              Value: "password"
+            - Name: "COUCHDB_USER"
+              Value: "admin"            
+          LogConfiguration:
+            LogDriver: awslogs
+            Options:
+              awslogs-region: !Ref 'AWS::Region'
+              awslogs-group: !Ref LogGroup
+              awslogs-stream-prefix: ecs
+    Metadata:
+      'AWS::CloudFormation::Designer':
+        id: 6c906d8c-1173-4055-8e38-84974bf161ed
+  ExecutionRole:
+    Type: 'AWS::IAM::Role'
+    Properties:
+      RoleName: !Join 
+        - ''
+        - - !Ref ServiceName
+          - ExecutionRole
+      AssumeRolePolicyDocument:
+        Statement:
+          - Effect: Allow
+            Principal:
+              Service: ecs-tasks.amazonaws.com
+            Action: 'sts:AssumeRole'
+      ManagedPolicyArns:
+        - 'arn:aws:iam::aws:policy/service-role/AmazonECSTaskExecutionRolePolicy'
+    Metadata:
+      'AWS::CloudFormation::Designer':
+        id: e28698a7-0d4d-4993-a18e-7a8649b3d8dc
+  TaskRole:
+    Type: 'AWS::IAM::Role'
+    Properties:
+      RoleName: !Join 
+        - ''
+        - - !Ref ServiceName
+          - TaskRole
+      AssumeRolePolicyDocument:
+        Statement:
+          - Effect: Allow
+            Principal:
+              Service: ecs-tasks.amazonaws.com
+            Action: 'sts:AssumeRole'
+    Metadata:
+      'AWS::CloudFormation::Designer':
+        id: 6b4392a1-caa0-4fb0-849e-d950151a800c
+  LoadBalancerSecurityGroup:
+    Type: 'AWS::EC2::SecurityGroup'
+    Properties:
+      GroupDescription: !Join 
+        - ''
+        - - !Ref ServiceName
+          - LoadBalancerSecurityGroup
+      VpcId: !Ref VPC
+      SecurityGroupIngress:
+        - IpProtocol: tcp
+          FromPort: 80
+          ToPort: 80
+          CidrIp: !Ref AccessIP
+        - IpProtocol: tcp
+          FromPort: 5984
+          ToPort: 5984
+          CidrIp: !Ref AccessIP
+        - IpProtocol: tcp
+          FromPort: 443
+          ToPort: 443
+          CidrIp: !Ref AccessIP
+    Metadata:
+      'AWS::CloudFormation::Designer':
+        id: 7dfedcc5-990f-4a3a-80d5-421ede86cd2f
+  ServiceCouchDB:
+    Type: 'AWS::ECS::Service'
+    DependsOn:
+      - CouchDBHTTP
+    Properties:
+      ServiceName: CouchDBService
+      Cluster: !Ref Cluster
+      TaskDefinition: !Ref TaskDefinitionCouchDB
+      DeploymentConfiguration:
+        MinimumHealthyPercent: 100
+        MaximumPercent: 200
+      DesiredCount: 1
+      HealthCheckGracePeriodSeconds: 30
+      LaunchType: FARGATE
+      PlatformVersion: "1.4.0"
+      NetworkConfiguration:
+        AwsvpcConfiguration:
+          AssignPublicIp: ENABLED
+          Subnets:
+            - !Ref SubnetA
+            - !Ref SubnetB
+          SecurityGroups:
+            - !Ref LoadBalancerSecurityGroup
+      LoadBalancers:
+        - ContainerName: CouchDB
+          ContainerPort: 5984
+          TargetGroupArn: !Ref TargetGroup2
+    Metadata:
+      'AWS::CloudFormation::Designer':
+        id: c3e79cf3-eb19-4edc-8d06-6ef19a92ec45
+  ServicePlanbeerUI:
+    Type: 'AWS::ECS::Service'
+    DependsOn:
+      - ListenerHTTP
+    Properties:
+      ServiceName: ServicePlanbeerUI
+      Cluster: !Ref Cluster
+      TaskDefinition: !Ref TaskDefinitionPlanBeerUI
+      DeploymentConfiguration:
+        MinimumHealthyPercent: 100
+        MaximumPercent: 200
+      DesiredCount: 2
+      HealthCheckGracePeriodSeconds: 30
+      LaunchType: FARGATE
+      NetworkConfiguration:
+        AwsvpcConfiguration:
+          AssignPublicIp: ENABLED
+          Subnets:
+            - !Ref SubnetA
+            - !Ref SubnetB
+          SecurityGroups:
+            - !Ref LoadBalancerSecurityGroup
+      LoadBalancers:
+        - ContainerName: PlanbeerUI
+          ContainerPort: 80
+          TargetGroupArn: !Ref TargetGroup
+    Metadata:
+      'AWS::CloudFormation::Designer':
+        id: 5f3977ad-8d5f-48e2-b5db-ebb1a3fb31b2
+  ServicePlanbeer:
+    Type: 'AWS::ECS::Service'
+    DependsOn:
+      - ListenerHTTPS
+      - ListenerHTTPAlt
+    Properties:
+      ServiceName: ServicePlanbeer
+      Cluster: !Ref Cluster
+      TaskDefinition: !Ref TaskDefinitionPlanBeer
+      DeploymentConfiguration:
+        MinimumHealthyPercent: 100
+        MaximumPercent: 200
+      DesiredCount: 2
+      HealthCheckGracePeriodSeconds: 120
+      LaunchType: FARGATE
+      PlatformVersion: "1.4.0"
+      NetworkConfiguration:
+        AwsvpcConfiguration:
+          AssignPublicIp: ENABLED
+          Subnets:  
+            - !Ref SubnetA
+            - !Ref SubnetB
+          SecurityGroups:
+            - !Ref LoadBalancerSecurityGroup
+      LoadBalancers:
+        - ContainerName: Planbeer
+          ContainerPort: 80
+          TargetGroupArn: !Ref TargetGroup3        
+        - ContainerName: Planbeer
+          ContainerPort: 443
+          TargetGroupArn: !Ref TargetGroup4
+    Metadata:
+      'AWS::CloudFormation::Designer':
+        id: 64bc9def-c1ed-4959-99e2-11634e051128              
+  TargetGroup:
+    Type: 'AWS::ElasticLoadBalancingV2::TargetGroup'
+    Properties:
+      HealthCheckProtocol: TCP    
+      UnhealthyThresholdCount: 2
+      HealthyThresholdCount: 2
+      Name: !Join 
+        - ''
+        - - !Ref ServiceName
+          - TargetGroup
+      Port: 80
+      Protocol: TCP
+      TargetGroupAttributes:
+        - Key: deregistration_delay.timeout_seconds
+          Value: 60
+      TargetType: ip
+      VpcId: !Ref VPC
+    Metadata:
+      'AWS::CloudFormation::Designer':
+        id: 1812b5a1-0075-436c-a28a-7f550e221da2
+  TargetGroup2:
+    Type: 'AWS::ElasticLoadBalancingV2::TargetGroup'
+    Properties:
+      HealthCheckProtocol: TCP    
+      UnhealthyThresholdCount: 2
+      HealthyThresholdCount: 2
+      Name: !Join 
+        - ''
+        - - !Ref ServiceName
+          - TargetGroup2
+      Port: 5984
+      Protocol: TCP
+      TargetGroupAttributes:
+        - Key: deregistration_delay.timeout_seconds
+          Value: 60
+      TargetType: ip
+      VpcId: !Ref VPC                  
+  TargetGroup3:
+    Type: 'AWS::ElasticLoadBalancingV2::TargetGroup'
+    Properties:
+      HealthCheckProtocol: TCP    
+      UnhealthyThresholdCount: 2
+      HealthyThresholdCount: 2
+      Name: !Join 
+        - ''
+        - - !Ref ServiceName
+          - TargetGroup3
+      Port: 80
+      Protocol: TCP
+      TargetGroupAttributes:
+        - Key: deregistration_delay.timeout_seconds
+          Value: 60
+      TargetType: ip
+      VpcId: !Ref VPC
+    Metadata:
+      'AWS::CloudFormation::Designer':
+        id: 1812b5a1-0075-436c-a28a-7f550e221da2
+  TargetGroup4:
+    Type: 'AWS::ElasticLoadBalancingV2::TargetGroup'
+    Properties:
+      HealthCheckPort: 80
+      HealthCheckProtocol: TCP    
+      UnhealthyThresholdCount: 2
+      HealthyThresholdCount: 2
+      Name: !Join 
+        - ''
+        - - !Ref ServiceName
+          - TargetGroup4
+      Port: 443
+      Protocol: TCP
+      TargetGroupAttributes:
+        - Key: deregistration_delay.timeout_seconds
+          Value: 60
+      TargetType: ip
+      VpcId: !Ref VPC              
+  ListenerHTTP:
+    Type: 'AWS::ElasticLoadBalancingV2::Listener'
+    Properties:
+      DefaultActions:
+        - TargetGroupArn: !Ref TargetGroup
+          Type: forward
+      LoadBalancerArn: !Ref LoadBalancerNetwork
+      Port: 80
+      Protocol: TCP
+    Metadata:
+      'AWS::CloudFormation::Designer':
+        id: b1991db0-801b-4056-86ee-69e76c462fcd
+  ListenerHTTPAlt:
+    Type: 'AWS::ElasticLoadBalancingV2::Listener'
+    Properties:
+      DefaultActions:
+        - TargetGroupArn: !Ref TargetGroup3
+          Type: forward
+      LoadBalancerArn: !Ref LoadBalancerNetwork
+      Port: 8080
+      Protocol: TCP
+  ListenerHTTPS:
+    Type: 'AWS::ElasticLoadBalancingV2::Listener'
+    Properties:
+      DefaultActions:
+        - TargetGroupArn: !Ref TargetGroup4
+          Type: forward
+      LoadBalancerArn: !Ref LoadBalancerNetwork
+      Port: 443
+      Protocol: TCP
+    Metadata:
+      'AWS::CloudFormation::Designer':
+        id: 73d3e8ce-52c4-4a50-b1b6-73357ebd5ac0
+  CouchDBHTTP:
+    Type: 'AWS::ElasticLoadBalancingV2::Listener'
+    Properties:
+      DefaultActions:
+        - TargetGroupArn: !Ref TargetGroup2
+          Type: forward
+      LoadBalancerArn: !Ref LoadBalancerNetwork
+      Port: 5984
+      Protocol: TCP
+    Metadata:
+      'AWS::CloudFormation::Designer':
+        id: ee4128df-cb7c-4bdf-8e14-3db440768bba
+  LoadBalancerNetwork:
+    Type: 'AWS::ElasticLoadBalancingV2::LoadBalancer'
+    Properties:
+      Name: PlanBeerLoadBalancerNetwork
+      Scheme: internet-facing
+      Subnets:
+        - !Ref SubnetA
+        - !Ref SubnetB
+      Type: network
+  LogGroup:
+    Type: 'AWS::Logs::LogGroup'
+    Properties:
+      LogGroupName: !Join 
+        - ''
+        - - /ecs/
+          - ServicePlanbeer
+          - TaskDefinitionPlanBeer
+    Metadata:
+      'AWS::CloudFormation::Designer':
+        id: d3c0326e-160e-44e3-b56f-d5bdb1e01cc9
+Outputs:
+  EndpointServer:
+    Description: Planbeer Server (This goes in your router)
+    Value: !Join 
+      - ''
+      - - 'https://'
+        - !GetAtt LoadBalancerNetwork.DNSName
+  EndpointUI:
+    Description: Planbeer UI (This is the Start Page)
+    Value: !Join 
+      - ''
+      - - 'http://'
+        - !GetAtt LoadBalancerNetwork.DNSName
+  EndpointDatabase:
+    Description: Planbeer DB (Database)
+    Value: !Join 
+      - ''
+      - - 'http://'
+        - !GetAtt LoadBalancerNetwork.DNSName
+        - ':5984/_utils'
+Metadata:
+  'AWS::CloudFormation::Designer':
+    d3c0326e-160e-44e3-b56f-d5bdb1e01cc9:
+      size:
+        width: 150
+        height: 150
+      position:
+        x: -1850
+        'y': 850
+      z: 1
+      embeds: []
+    1812b5a1-0075-436c-a28a-7f550e221da2:
+      size:
+        width: 60
+        height: 60
+      position:
+        x: -1660
+        'y': 60
+      z: 1
+      embeds: []
+    7dfedcc5-990f-4a3a-80d5-421ede86cd2f:
+      size:
+        width: 60
+        height: 60
+      position:
+        x: -1310
+        'y': 240
+      z: 1
+      embeds: []
+    05caa42d-632d-4764-8786-35d5fb277a20:
+      size:
+        width: 60
+        height: 60
+      position:
+        x: -1310
+        'y': 110
+      z: 1
+      embeds: []
+      isassociatedwith:
+        - 7dfedcc5-990f-4a3a-80d5-421ede86cd2f
+    ee4128df-cb7c-4bdf-8e14-3db440768bba:
+      size:
+        width: 60
+        height: 60
+      position:
+        x: -1660
+        'y': -90
+      z: 1
+      embeds: []
+      isassociatedwith:
+        - 05caa42d-632d-4764-8786-35d5fb277a20
+    73d3e8ce-52c4-4a50-b1b6-73357ebd5ac0:
+      size:
+        width: 60
+        height: 60
+      position:
+        x: -1550
+        'y': -90
+      z: 1
+      embeds: []
+      isassociatedwith:
+        - 05caa42d-632d-4764-8786-35d5fb277a20
+    b1991db0-801b-4056-86ee-69e76c462fcd:
+      size:
+        width: 60
+        height: 60
+      position:
+        x: -1440
+        'y': -80
+      z: 1
+      embeds: []
+      isassociatedwith:
+        - 05caa42d-632d-4764-8786-35d5fb277a20
+    06277f9c-37dc-463a-8239-1aa410741489:
+      size:
+        width: 60
+        height: 60
+      position:
+        x: -1320
+        'y': 390
+      z: 1
+      embeds: []
+    6b4392a1-caa0-4fb0-849e-d950151a800c:
+      size:
+        width: 60
+        height: 60
+      position:
+        x: -1720
+        'y': 660
+      z: 1
+      embeds: []
+    e28698a7-0d4d-4993-a18e-7a8649b3d8dc:
+      size:
+        width: 60
+        height: 60
+      position:
+        x: -1930
+        'y': 350
+      z: 1
+      embeds: []
+    6c906d8c-1173-4055-8e38-84974bf161ed:
+      size:
+        width: 60
+        height: 60
+      position:
+        x: -1730
+        'y': 240
+      z: 1
+      embeds: []
+    5b1af99a-b570-411b-9f2f-ba641b353bb5:
+      size:
+        width: 60
+        height: 60
+      position:
+        x: -1730
+        'y': 500
+      z: 1
+      embeds: []
+    a5664fb6-e36f-48c1-9f35-e694f10d92c4:
+      size:
+        width: 60
+        height: 60
+      position:
+        x: -1730
+        'y': 350
+      z: 1
+      embeds: []
+    e7be387f-4938-4e7d-ad50-30ab50797342:
+      size:
+        width: 60
+        height: 60
+      position:
+        x: -1530
+        'y': 810
+      z: 1
+      embeds: []
+    64bc9def-c1ed-4959-99e2-11634e051128:
+      size:
+        width: 60
+        height: 60
+      position:
+        x: -1560
+        'y': 500
+      z: 1
+      embeds: []
+      isassociatedwith:
+        - 5b1af99a-b570-411b-9f2f-ba641b353bb5
+        - e7be387f-4938-4e7d-ad50-30ab50797342
+        - 1812b5a1-0075-436c-a28a-7f550e221da2
+      dependson:
+        - 73d3e8ce-52c4-4a50-b1b6-73357ebd5ac0
+    5f3977ad-8d5f-48e2-b5db-ebb1a3fb31b2:
+      size:
+        width: 60
+        height: 60
+      position:
+        x: -1570
+        'y': 350
+      z: 1
+      embeds: []
+      isassociatedwith:
+        - a5664fb6-e36f-48c1-9f35-e694f10d92c4
+        - e7be387f-4938-4e7d-ad50-30ab50797342
+        - 1812b5a1-0075-436c-a28a-7f550e221da2
+      dependson:
+        - b1991db0-801b-4056-86ee-69e76c462fcd
+    c3e79cf3-eb19-4edc-8d06-6ef19a92ec45:
+      size:
+        width: 60
+        height: 60
+      position:
+        x: -1570
+        'y': 240
+      z: 1
+      embeds: []
+      isassociatedwith:
+        - 6c906d8c-1173-4055-8e38-84974bf161ed
+        - e7be387f-4938-4e7d-ad50-30ab50797342
+        - 1812b5a1-0075-436c-a28a-7f550e221da2
+      dependson:
+        - ee4128df-cb7c-4bdf-8e14-3db440768bba

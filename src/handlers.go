@@ -2,24 +2,16 @@ package main
 
 import (
 	"encoding/json"
-	"fmt"
 	"io"
 	"io/ioutil"
 	"log"
 	"net/http"
+	"net/url"
 	"strconv"
 )
 
 func Index(w http.ResponseWriter, r *http.Request) {
-	fmt.Fprintln(w, "Welcome!")
-}
-
-func PicoBrewIndex(w http.ResponseWriter, r *http.Request) {
-	w.Header().Set("Content-Type", "application/json; charset=UTF-8")
-	w.WriteHeader(http.StatusOK)
-	//	if err := json.NewEncoder(w).Encode(todos); err != nil {
-	//		panic(err)
-	//	}
+	http.ServeFile(w, r, "/build/version.html")
 }
 
 func UpdateHeader( w http.ResponseWriter,  retcode int ) http.ResponseWriter {
@@ -56,9 +48,17 @@ func PicoBrewZState(w http.ResponseWriter, r *http.Request) {
 
 	wRet := UpdateHeader( w, 200 );
 
+
+
+	values, _ := url.ParseQuery( r.URL.RawQuery )
+
+	token := values.Get( "token" )
+
 	var resp ZStateResponse
 
-	t := createZStateResponse(resp)
+	t := createZStateResponse(resp, token)
+
+	updateMachineStatusIdle( token )
 
 	if err := json.NewEncoder(wRet).Encode(t); err != nil {
 		panic(err)
@@ -139,8 +139,12 @@ func PicoBrewSessionController(w http.ResponseWriter, r *http.Request) {
 	}
 
 	wRet := UpdateHeader( w, 200 );
+
+	values, _ := url.ParseQuery( r.URL.RawQuery )
+
+	token := values.Get( "token" )
 	
-	t := createSessionControllerRespMsg(inmsg)
+	t := createSessionControllerRespMsg(inmsg, token)
 
 	if err := json.NewEncoder(wRet).Encode(t); err != nil {
 		panic(err)
@@ -156,6 +160,7 @@ func PicoBrewSessionLogController(w http.ResponseWriter, r *http.Request) {
 	if err := r.Body.Close(); err != nil {
 		panic(err)
 	}
+
 	if err := json.Unmarshal(body, &inmsg); err != nil {
 		w.Header().Set("Content-Type", "application/json; charset=utf-8")
 		w.WriteHeader(422) // unprocessable entity
@@ -165,8 +170,12 @@ func PicoBrewSessionLogController(w http.ResponseWriter, r *http.Request) {
 	}
 
 	wRet := UpdateHeader( w, 200 );
-	
-	t := createSessionLogRespMsg(inmsg)
+
+	values, _ := url.ParseQuery( r.URL.RawQuery )
+
+	token := values.Get( "token" )
+
+	t := createSessionLogRespMsg(inmsg, token)
 
 	if err := json.NewEncoder(wRet).Encode(t); err != nil {
 		panic(err)
@@ -175,29 +184,3 @@ func PicoBrewSessionLogController(w http.ResponseWriter, r *http.Request) {
 
 
 
-/*
-func PicoBrewCreate(w http.ResponseWriter, r *http.Request) {
-	var todo Todo
-	body, err := ioutil.ReadAll(io.LimitReader(r.Body, 1048576))
-	if err != nil {
-		panic(err)
-	}
-	if err := r.Body.Close(); err != nil {
-		panic(err)
-	}
-	if err := json.Unmarshal(body, &todo); err != nil {
-		w.Header().Set("Content-Type", "application/json; charset=UTF-8")
-		w.WriteHeader(422) // unprocessable entity
-		if err := json.NewEncoder(w).Encode(err); err != nil {
-			panic(err)
-		}
-	}
-
-	t := RepoCreateTodo(todo)
-	w.Header().Set("Content-Type", "application/json; charset=UTF-8")
-	w.WriteHeader(http.StatusCreated)
-	if err := json.NewEncoder(w).Encode(t); err != nil {
-		panic(err)
-	}
-}
-*/

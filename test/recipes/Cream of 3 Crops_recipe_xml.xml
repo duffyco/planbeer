@@ -1,0 +1,220 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<RECIPES>
+  <RECIPE>
+    <VERSION>1</VERSION>
+    <TYPE>All Grain</TYPE>
+    <BREWER>jduffy</BREWER>
+    <BATCH_SIZE>11.36</BATCH_SIZE>
+    <DISPLAY_BATCH_SIZE>11.36 L</DISPLAY_BATCH_SIZE>
+    <BOIL_SIZE>14.76</BOIL_SIZE>
+    <DISPLAY_BOIL_SIZE>14.76 L</DISPLAY_BOIL_SIZE>
+    <BOIL_TIME>60</BOIL_TIME>
+    <EFFICIENCY>55</EFFICIENCY>
+    <TASTE_NOTES>A pale, very sweet, full-bodied Cream Ale
+
+Note: First brewing had .75 Crystal (4AA) and .25 Mt Hood (5.5AA).   (</TASTE_NOTES>
+    <DATE>5/21/2020 3:10:27 PM</DATE>
+    <OG>1.0533</OG>
+    <EST_OG>1.0533</EST_OG>
+    <FG>1.0107</FG>
+    <EST_FG>1.0107</EST_FG>
+    <IBU>18</IBU>
+    <COLOR>3</COLOR>
+    <EST_COLOR>3</EST_COLOR>
+    <ABV>5.7</ABV>
+    <EST_ABV>5.7</EST_ABV>
+    <PRIMARY_AGE>14400</PRIMARY_AGE>
+    <PRIMARY_TEMP>23</PRIMARY_TEMP>
+    <SECONDARY_AGE>0</SECONDARY_AGE>
+    <SECONDARY_TEMP>7</SECONDARY_TEMP>
+    <FERMENTATION_STAGES>2</FERMENTATION_STAGES>
+    <STYLE>
+      <CATEGORY_NUMBER>1</CATEGORY_NUMBER>
+      <STYLE_LETTER>C</STYLE_LETTER>
+      <NAME>Cream Ale</NAME>
+      <VERSION>1</VERSION>
+      <STYLE_GUIDE>BJCP 2015</STYLE_GUIDE>
+      <OG_MIN>1.042</OG_MIN>
+      <OG_MAX>1.055</OG_MAX>
+      <FG_MIN>1.006</FG_MIN>
+      <FG_MAX>1.012</FG_MAX>
+      <IBU_MIN>8</IBU_MIN>
+      <IBU_MAX>20</IBU_MAX>
+      <COLOR_MIN>2.5</COLOR_MIN>
+      <COLOR_MAX>5</COLOR_MAX>
+    </STYLE>
+    <EQUIPMENT>
+      <NAME>PicoBrew Z/Zymatic</NAME>
+      <VERSION>1</VERSION>
+    </EQUIPMENT>
+    <ZYMATIC>
+      <MASH_TEMP>73</MASH_TEMP>
+      <MASH_TIME>135</MASH_TIME>
+      <BOIL_TEMP>97</BOIL_TEMP>
+      <STEP>
+        <NAME>Heat to Single S...</NAME>
+        <TEMP>67</TEMP>
+        <TIME>0</TIME>
+        <LOCATION>PassThrough</LOCATION>
+        <DRAIN>0</DRAIN>
+      </STEP>
+      <STEP>
+        <NAME>Single Step Infu...</NAME>
+        <TEMP>67</TEMP>
+        <TIME>120</TIME>
+        <LOCATION>Mash</LOCATION>
+        <DRAIN>8</DRAIN>
+      </STEP>
+      <STEP>
+        <NAME>Heat to Mash Out</NAME>
+        <TEMP>79</TEMP>
+        <TIME>0</TIME>
+        <LOCATION>PassThrough</LOCATION>
+        <DRAIN>0</DRAIN>
+      </STEP>
+      <STEP>
+        <NAME>Mash Out</NAME>
+        <TEMP>79</TEMP>
+        <TIME>15</TIME>
+        <LOCATION>Mash</LOCATION>
+        <DRAIN>8</DRAIN>
+      </STEP>
+      <STEP>
+        <NAME>Heat to Boil</NAME>
+        <TEMP>97</TEMP>
+        <TIME>0</TIME>
+        <LOCATION>PassThrough</LOCATION>
+        <DRAIN>0</DRAIN>
+      </STEP>
+      <STEP>
+        <NAME>Boil Adjunct 1</NAME>
+        <TEMP>97</TEMP>
+        <TIME>35</TIME>
+        <LOCATION>Adjunct1</LOCATION>
+        <DRAIN>0</DRAIN>
+      </STEP>
+      <STEP>
+        <NAME>Boil Adjunct 2</NAME>
+        <TEMP>97</TEMP>
+        <TIME>25</TIME>
+        <LOCATION>Adjunct2</LOCATION>
+        <DRAIN>5</DRAIN>
+      </STEP>
+      <STEP>
+        <NAME>Connect Chiller</NAME>
+        <TEMP>23</TEMP>
+        <TIME>0</TIME>
+        <LOCATION>Pause</LOCATION>
+        <DRAIN>0</DRAIN>
+      </STEP>
+      <STEP>
+        <NAME>Chill</NAME>
+        <TEMP>23</TEMP>
+        <TIME>10</TIME>
+        <LOCATION>PassThrough</LOCATION>
+        <DRAIN>10</DRAIN>
+      </STEP>
+    </ZYMATIC>
+    <MASH>
+      <NAME>SingleStepWithMashOut</NAME>
+      <VERSION>1</VERSION>
+      <GRAIN_TEMP>22.22222</GRAIN_TEMP>
+      <MASH_STEPS>
+        <MASH_STEP>
+          <NAME>Single Step Infusion Mash</NAME>
+          <VERSION>1</VERSION>
+          <TYPE>Temperature</TYPE>
+          <STEP_TEMP>67</STEP_TEMP>
+          <STEP_TIME>120</STEP_TIME>
+        </MASH_STEP>
+        <MASH_STEP>
+          <NAME>Mash Out</NAME>
+          <VERSION>1</VERSION>
+          <TYPE>Temperature</TYPE>
+          <STEP_TEMP>79</STEP_TEMP>
+          <STEP_TIME>15</STEP_TIME>
+        </MASH_STEP>
+      </MASH_STEPS>
+    </MASH>
+    <HOPS>
+      <HOP>
+        <NAME>Willamette</NAME>
+        <VERSION>1</VERSION>
+        <ALPHA>3.8</ALPHA>
+        <AMOUNT>0.015</AMOUNT>
+        <USE>Boil</USE>
+        <TIME>60</TIME>
+      </HOP>
+      <HOP>
+        <NAME>Crystal</NAME>
+        <VERSION>1</VERSION>
+        <ALPHA>4</ALPHA>
+        <AMOUNT>0.015</AMOUNT>
+        <USE>Boil</USE>
+        <TIME>25</TIME>
+      </HOP>
+    </HOPS>
+    <WATERS>
+      <WATER>
+        <VERSION>1</VERSION>
+        <AMOUNT>14.76</AMOUNT>
+      </WATER>
+    </WATERS>
+    <FERMENTABLES>
+      <FERMENTABLE>
+        <NAME>American Two-Row Pale</NAME>
+        <VERSION>1</VERSION>
+        <AMOUNT>1.95</AMOUNT>
+        <TYPE>Grain</TYPE>
+        <YIELD>80.00</YIELD>
+        <COLOR>1.8</COLOR>
+      </FERMENTABLE>
+      <FERMENTABLE>
+        <NAME>Flaked Corn</NAME>
+        <VERSION>1</VERSION>
+        <AMOUNT>0.68</AMOUNT>
+        <TYPE>Other Grain</TYPE>
+        <YIELD>86.09</YIELD>
+        <COLOR>0.55</COLOR>
+      </FERMENTABLE>
+      <FERMENTABLE>
+        <NAME>Rice</NAME>
+        <VERSION>1</VERSION>
+        <AMOUNT>0.18</AMOUNT>
+        <TYPE>Other Grain</TYPE>
+        <YIELD>86.09</YIELD>
+        <COLOR>0.55</COLOR>
+      </FERMENTABLE>
+    </FERMENTABLES>
+    <YEASTS>
+      <YEAST>
+        <NAME>SafAle</NAME>
+        <VERSION>1</VERSION>
+        <AMOUNT>0</AMOUNT>
+        <FORM>Dry</FORM>
+        <LABORATORY>Fermentis</LABORATORY>
+        <PRODUCT_ID>US-05</PRODUCT_ID>
+        <MIN_TEMPERATURE>18</MIN_TEMPERATURE>
+        <MAX_TEMPERATURE>28</MAX_TEMPERATURE>
+        <ATTENUATION>80</ATTENUATION>
+      </YEAST>
+    </YEASTS>
+    <KEGSMART>
+      <STEPS>
+        <STEP>
+          <NUMBER>1</NUMBER>
+          <NAME>Fermentation</NAME>
+          <TIME>14400</TIME>
+          <TEMP>23</TEMP>
+        </STEP>
+        <STEP>
+          <NUMBER>2</NUMBER>
+          <NAME>Crash Chill</NAME>
+          <TIME>0</TIME>
+          <TEMP>7</TEMP>
+        </STEP>
+      </STEPS>
+    </KEGSMART>
+    <NAME>Cream of 3 Crops</NAME>
+  </RECIPE>
+</RECIPES>

@@ -1,0 +1,85 @@
+AWSTemplateFormatVersion: 2010-09-09
+Description: An example CloudFormation template for Fargate.
+Parameters:
+  VPC:
+    Type: 'AWS::EC2::VPC::Id'
+  SubnetA:
+    Type: 'AWS::EC2::Subnet::Id'
+  SubnetB:
+    Type: 'AWS::EC2::Subnet::Id'
+  ServiceName:
+    Type: String
+    Default: planbeer
+Resources:
+  EFSVolumePlanBeer:
+    Type: AWS::EFS::FileSystem
+    Properties:
+      Encrypted: true
+      FileSystemTags:
+        - Key: Name
+          Value: !Sub "${AWS::StackName}-efs-vol"
+  
+  EFSServerSecurityGroup:
+    Type: AWS::EC2::SecurityGroup
+    Properties:
+      GroupName: !Sub "${AWS::StackName}-efs-server-endpoints"
+      GroupDescription: Which client ip addrs are allowed to access EFS server endpoints for mount
+      VpcId: !Ref VPC
+      SecurityGroupIngress:
+        - IpProtocol: tcp
+          FromPort: 2049
+          ToPort: 2049
+          CidrIp: 0.0.0.0/0
+
+  EFSAccessPointDBData:
+    Type: AWS::EFS::AccessPoint
+    Properties:
+      FileSystemId: !Ref EFSVolumePlanBeer
+      RootDirectory:
+        CreationInfo:
+          OwnerGid: "0"
+          OwnerUid: "0"
+          Permissions: "777"
+
+  EFSAccessPointAppData:
+    Type: AWS::EFS::AccessPoint
+    Properties:
+      FileSystemId: !Ref EFSVolumePlanBeer
+      RootDirectory:
+        CreationInfo:
+          OwnerGid: "0"
+          OwnerUid: "0"
+          Permissions: "777"
+
+  EFSMountTarget0:
+    Type: AWS::EFS::MountTarget
+    Properties:
+      FileSystemId: !Ref EFSVolumePlanBeer
+      SecurityGroups:
+        - !Ref EFSServerSecurityGroup
+      SubnetId: !Ref SubnetA
+
+  EFSMountTarget1:
+    Type: AWS::EFS::MountTarget
+    Properties:
+      FileSystemId: !Ref EFSVolumePlanBeer
+      SecurityGroups:
+        - !Ref EFSServerSecurityGroup
+      SubnetId: !Ref SubnetB
+Outputs:
+  EFSVolumePlanBeer:
+    Description: 'EFS Volume - Plan Beer'
+    Value: !Ref EFSVolumePlanBeer
+    Export:
+      Name: !Sub '${AWS::StackName}-EFSVolumePlanBeer'
+  EFSAccessPointDBData:
+    Description: 'EFS Volume - Plan Beer - DB Mount'
+    Value: !Ref EFSAccessPointDBData
+    Export:
+      Name: !Sub '${AWS::StackName}-EFSAccessPointDBData'
+  EFSAccessPointAppData:
+    Description: 'EFS Volume - Plan Beer - App Mount'
+    Value: !Ref EFSAccessPointAppData
+    Export:
+      Name: !Sub '${AWS::StackName}-EFSAccessPointAppData'
+

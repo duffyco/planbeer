@@ -2,35 +2,8 @@ package main
 
 import (
 	"log"
+	"strconv"
 )
-
-type RecipeRefListControllerMsg struct {
-	Kind int `json:"Kind"`
-	MaxCount      int    `json:"MaxCount"`
-	Offset      int    `json:"Offset"`
-}
-
-type RecipeDescription struct {
-	Abv int `json:"Abv"`
-	ID int `json:"ID"`
-	Ibu int `json:"Ibu"`
-	Kind int `json:"Kind"`
-	Name string `json:"Name"`
-	Uri *string `json:"Uri"`
-}
-
-type RecipeRefListControllerRespMsg struct {
-	Kind int `json:"Kind"`
-	Offset      int    `json:"Offset"`
-	SearchString *string `json:"SearchString"`
-	MaxCount      int    `json:"MaxCount"`
-	TotalResults      int    `json:"TotalResults"`
-	Recipes 	[]RecipeDescription  `json:"Recipes"`
-}
-
-func init() {
-	NewRecipeManager( "/recipes")
-}
 
 func createRecipeRefListControllerRespMsg( inmsg RecipeRefListControllerMsg ) RecipeRefListControllerRespMsg {
 	
@@ -39,18 +12,36 @@ func createRecipeRefListControllerRespMsg( inmsg RecipeRefListControllerMsg ) Re
 	retValue.Offset = inmsg.Offset;
 	retValue.SearchString = nil;
 	retValue.TotalResults = len( recipeList )
+
+	if( retValue.TotalResults > inmsg.MaxCount ) {
+		retValue.TotalResults = inmsg.MaxCount
+	}
 	
 	for i, recipe := range recipeList {
 
-		retValue.Recipes = append( retValue.Recipes, GetRecipeDescription( recipe ) )
+		retValue.Recipes = append( retValue.Recipes, GetControllerRecipeRefDescription( recipe ) )
 
 		log.Printf("Recipe Added %s (%d)", retValue.Recipes[i].Name, retValue.Recipes[i].ID)
 	} 
 
-//	if( length(retValue.Recipes) > inmsg.MaxCount )
-//		retValue.MaxCount = inmsg.MaxCount
 	// @TODO: Setting this to 0 for some reason???
 	retValue.MaxCount = 0
 
+		//@TODO: Need to have a synced flag in metadata
+		//@TODO: Kind variable needs to be adjusted based on type (Beer/Coffee/etc)
+
 	return retValue
+}
+
+func GetControllerRecipeRefDescription(rec Recipe) RecipeDescription {
+	var ret RecipeDescription
+
+	ret.Abv = int(rec.XmlRecipe.ABV)
+	ret.ID = rec.RecipeID
+	ret.Ibu = rec.XmlRecipe.IBU
+	ret.Kind, _ = strconv.Atoi(rec.XmlRecipe.Type);
+	ret.Name = rec.ID
+	ret.Uri = nil
+
+	return ret
 }

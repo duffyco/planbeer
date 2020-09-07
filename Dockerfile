@@ -4,7 +4,8 @@ FROM golang:alpine
 ENV GO111MODULE=on \
     CGO_ENABLED=0 \
     GOOS=linux \
-    GOARCH=arm
+    GOARCH=amd64
+
 
 #includes
 RUN apk add openssl
@@ -35,7 +36,7 @@ EXPOSE 443
 COPY bin/* /app/
 RUN chmod +x /app/*
 
-VOLUME [/recipes]
+VOLUME [/planbeer]
 
 # Command to run when starting the container
 CMD ["/app/init.sh"]
