@@ -24,11 +24,11 @@ Anyone can run this, no special hardware required.  Deployable on AWS, it's 30mi
 - There are bugs.  It's designed for refresh/retry.
 - Only Desktop supported.  Mobile will probably look funny.
 
-![Main View](https://github.com/duffyco/picobrewui/images/BrewingView.png?raw=true "Main View")
-[Active Rinse](https://github.com/duffyco/picobrewui/images/ActiveRinse.png?raw=true "Active Rinse")
-[Recipe](https://github.com/duffyco/picobrewui/images/Recipe.png?raw=true "Recipe View")
-[Chart](https://github.com/duffyco/picobrewui/images/Chart.png?raw=true "Chart View")
-[Import Pico Data](https://github.com/duffyco/picobrewui/images/Import.png?raw=true "Import Pico Data")
+![Main View](https://github.com/duffyco/planbeerui/tree/master/images/BrewingView.png?raw=true "Main View")
+[Active Rinse](https://github.com/duffyco/planbeerui/tree/master/images/ActiveRinse.png?raw=true "Active Rinse")
+[Recipe](https://github.com/duffyco/planbeerui/tree/master/images/Recipe.png?raw=true "Recipe View")
+[Chart](https://github.com/duffyco/planbeerui/tree/master/images/Chart.png?raw=true "Chart View")
+[Import Pico Data](https://github.com/duffyco/planbeerui/tree/master/images/Import.png?raw=true "Import Pico Data")
 
 <hr> 
 
@@ -120,11 +120,11 @@ To check you've done this correctly:
 - Click on the UI Located Here Link.
 
 The PlanB Website should appear.   (If you tear down the planbeer-app, you'll have to re-do this when you tip-it back up.)
-![Main View](https://github.com/duffyco/picobrewui/images/Main.png?raw=true "Main View")
+![Main View](https://github.com/duffyco/planbeerui/tree/master/images/Main.png?raw=true "Main View")
 
 
 6) Join the machine to your network.  Power on the machine and refresh.  Boom!
-![Welcome View](https://github.com/duffyco/picobrewui/images/Welcome.png?raw=true "Welcome View")
+![Welcome View](https://github.com/duffyco/planbeerui/tree/master/images/Welcome.png?raw=true "Welcome View")
 
 <hr>
 
@@ -152,6 +152,11 @@ Done.
 2) First import Recipes by Import File | Upload.  Save when imported.   It will now be visible under Recipes.
 
 3) Next import Session by Import File | Upload and select the machine and recipes.   Save.  This will take some time.
-![Import](https://github.com/duffyco/picobrewui/images/Import.png?raw=true "Import View")
+![Import](https://github.com/duffyco/planbeerui/tree/master/images/Import.png?raw=true "Import View")
 
 ### The app never deletes these files unless you click trash.  It will disappear once imported but will reappear if you delete the session/recipe through the UI.
+
+
+## Thanks
+Design is Heavily Borrowed from Sonarr.  https://sonarr.tv/
+Based off Widdix AWS scripts - amazing work.  https://github.com/widdix/aws-cf-templates
