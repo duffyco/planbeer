@@ -6,7 +6,7 @@ No specialized hardware.  If you have a Windows Machine with Wifi, you can proba
 
 It's been quiet for a while, but time for a new release.   It's still Alpha.  PLEASE test before running something important on it.  Some brave souls are running the previous release with quite positive results.   
 
-Anyone can run this, no special hardware required.  Deployable on AWS, it's 30min gate-to-gate from start to machine on.
+Deployable on AWS, it's 30min gate-to-gate for me from start to machine on.
 
 <b> This release features: </b>
 - Ability to import Recipes and Sessions from PicoBrew
@@ -14,17 +14,18 @@ Anyone can run this, no special hardware required.  Deployable on AWS, it's 30mi
 - Brews all seem to work (and update in UI)
 - Graphs and Recipe view 
 - Full web app with Database Storage 
-- Easy deploy to AWS.
+- Easy deploy to AWS without installing any software
 
 <b> Missing Features </b>
 - Set Machine to Use Imperial
 - You can't edit/create recipes
 - It isn't secure by default
-- It builds on ARM/RPi, but no multi-platform images yet.
+- It builds on ARM/RPi, but no multi-platform images yet.  I'm running on k3s currently.
 - There are bugs.  It's designed for refresh/retry.
 - Only Desktop supported.  Mobile will probably look funny.
 
 <hr>
+
 ## Screenshots
 
 ![Main View](https://github.com/duffyco/planbeerui/blob/master/images/BrewingView.png?raw=true "Main View")
@@ -39,17 +40,19 @@ Anyone can run this, no special hardware required.  Deployable on AWS, it's 30mi
 
 <hr> 
 
-<b> The Plan </b>
+## What's your plan here?
 
-I'll be adding some features I felt Picobrew sorely missed first and then starting building out further.  
+I'll be adding some features I felt Picobrew sorely missed first and then starting to build out further.  
 
-My background is InfoSec/AI.  My plans are to use this for my homebrewing along with using this codebase for demonstrations.  AWS Cost Reduction will also happen (it'll get cheaper).  
+My background is InfoSec/AI.  My plans are to use this for my homebrewing along with using this codebase for demonstrations.  
 
-1.0 is targeted towards the end-of-year.  
+AWS Cost Reduction will also happen (it'll get cheaper).  
+
+<br><br>1.0 is targeted towards the end-of-year.  
 
 <hr>
 
-<b> What is this? </b>
+## What is this?
 
 This project is a standalone, self-contained implementation that takes PicoBrew-XML recipes and interfaces with a PicoBrew Z to perform completely automated brew.   I have been successful in brewing recipes start-to-finish with this.
 
@@ -73,21 +76,23 @@ The following appear to work:
 - *Only 0.0.116 Firmware is supported*
 
 <hr>
-<b> AWS Deploy </b>
 
-You'll need to click these three scripts <b> in order </b>.  I'd also recommend an <a href="https://aws.amazon.com">AWS account </a>.  Free Tier supports this (it still costs money, but less).
+## AWS Deploy [~25min]
+
+You'll need to click these three scripts <b> in order </b>.  
+
+I'd also recommend an <a href="https://aws.amazon.com">AWS account </a>.  Free Tier supports this (it still costs money, but less).
 
 It's broken apart into three phases.   This allows us to uninstall the app (and save $) without losing the data.  
 
-Super Easy.  25min total.  Keep refreshing and wait until you see "CREATE_COMPLETE" under the Stack
+Super Easy.  Keep refreshing and wait until you see "CREATE_COMPLETE" under the Stack
 
-<b> Please shut this down when done.  It's not expensive (~0.06/hr), but no one wants unexpected bills.  You're on your own with Amazon's Billing Department.</b>
+### Please shut this down when done.  It's not expensive (~0.06/hr), but no one wants unexpected bills.  You're on your own with Amazon's Billing Department.
 
-1) [2min] Setup the VPC.  <Launch Stack>
+1) [2min] Setup the VPC.  [Launch Stack](https://us-east-2.console.aws.amazon.com/cloudformation/home?region=us-east-2#/stacks/events?stackId=arn%3Aaws%3Acloudformation%3Aus-east-2%3A289398619024%3Astack%2Fvpc%2Fae5ab920-ef1e-11ea-a0db-06a590253d7a&filteringText=&filteringStatus=active&viewNested=true&hideStacks=fwwwlse)
 - Use the defaults.  Click Create Stack.
-[Launch Stack](https://us-east-2.console.aws.amazon.com/cloudformation/home?region=us-east-2#/stacks/events?stackId=arn%3Aaws%3Acloudformation%3Aus-east-2%3A289398619024%3Astack%2Fvpc%2Fae5ab920-ef1e-11ea-a0db-06a590253d7a&filteringText=&filteringStatus=active&viewNested=true&hideStacks=fwwwlse)
 
-2) [4min] Setup the Storage.  <Launch Stack>
+2) [4min] Setup the Storage.  [Launch Stack](https://console.aws.amazon.com/cloudformation/home#/stacks/create/review?templateURL=https://planbeer-aws-scripts.s3.us-east-2.amazonaws.com/2-aws-planbeer-storage.yaml)
 - Stack Name: planbeer-storage
 - Service Name: planbeer
 - Subnet A: <pick one with (A Public)>
@@ -95,17 +100,14 @@ Super Easy.  25min total.  Keep refreshing and wait until you see "CREATE_COMPLE
 - VPC: <pick one with 10.0.0.0/16>
 
 Next. Create Stack.
-[Launch Stack](https://console.aws.amazon.com/cloudformation/home#/stacks/create/review?templateURL=https://planbeer-aws-scripts.s3.us-east-2.amazonaws.com/2-aws-planbeer-storage.yaml)
 
-
-3) [10min] Setup the App <Launch Stack>
+3) [10min] Setup the App [Launch Stack](https://console.aws.amazon.com/cloudformation/home#/stacks/create/review?templateURL=https://planbeer-aws-scripts.s3.us-east-2.amazonaws.com/3-aws-planbeer-cluster.yaml)
 - Stack Name: planbeer-app
 - Subnet A: <pick one with (A Public)>
 - Subnet B: <pick one with (B Public)>
 - VPC: <pick one with 10.0.0.0/16>
 
 Leave everything else.  Next. Next.  Check the "I acknowledge IAM..." Box.  Create Stack.
-[Launch Stack](https://console.aws.amazon.com/cloudformation/home#/stacks/create/review?templateURL=https://planbeer-aws-scripts.s3.us-east-2.amazonaws.com/3-aws-planbeer-cluster.yaml)
 
 This will take a while.  Wait for the "CREATE_COMPLETE" under planbeer-app. Go get a coffee.  
 
@@ -116,10 +118,10 @@ This will take a while.  Wait for the "CREATE_COMPLETE" under planbeer-app. Go g
 
 You can use the web app to import recipes and sessions via the UI.  
 
-5) To connect the machine you need to configure your router DNS.  I can't provide much help here.  You need to set the router to mapping picobrew.com to the Server Name (without the 'HTTPS://' and '/').
+5) To connect the machine you need to configure your router to map picobrew.com to the Server Name (without the 'HTTPS://' and '/'). Each router is different on how to do this.
 - I use AdvancedTomato and adjust the address under Advanced Settings | DHCP/DNS | Dnsmasq settings 
 
-[10 min] <b>If you've got a Windows 10 Laptop </b> it can probably act as a Wifi HotSpot - [Win10 Scripts] (/bin/Win10Hotspot)
+Alternative [10 min]: <b>If you've got a Windows 10 Laptop </b> it can probably act as a Wifi HotSpot - [Win10 Scripts](/tree/master/support/Win10Hotspot)
 
 To check you've done this correctly: 
 - Click on the EndpointServer link.   
@@ -135,14 +137,15 @@ The PlanB Website should appear.   (If you tear down the planbeer-app, you'll ha
 
 <hr>
 
-
-
-<b>Shut things down!   </b>
-
+#Shut things down!
 <hr>
-<b> Shutdown </b>
+
+
+## Shutdown Process
 1) Goto aws.amazon.com | Sign in (or My Account -> AWS Management Console) 
+
 2) Click Services | Find CloudFormation
+
 3) To remove Planbeer-app -> Click the Dot and then the Delete Button.  
 
 Planbeer-app is the most costly part.   If you're a fiscal-person - much like the author - you can delete this <b> and not lose any data.</b>  I only tip it up on Brew Days.  You'll have to also update the DNS entry each time however.  This means running Steps 3-5 again.
@@ -163,6 +166,9 @@ Done.
 
 ### The app never deletes these files unless you click trash.  It will disappear once imported but will reappear if you delete the session/recipe through the UI.
 
+## Containers / K8s
+
+[Deploy Instructions with Containers](/tree/master/deploy)
 
 ## Thanks
 Design is Heavily Borrowed from Sonarr.  https://sonarr.tv/
