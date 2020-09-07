@@ -168,8 +168,9 @@ Done.
 
 ## Containers / K8s
 
-[Deploy Instructions with Containers](/tree/master/deploy)
+[Deploy Instructions with Containers](https://github.com/duffyco/planbeer/tree/master/deploy)
 
 ## Thanks
 Design is Heavily Borrowed from Sonarr.  https://sonarr.tv/
+
 Based off Widdix AWS scripts - amazing work.  https://github.com/widdix/aws-cf-templates
