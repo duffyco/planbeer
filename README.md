@@ -111,12 +111,16 @@ Next. Create Stack.
 
 Leave everything else.  Next. Next.  Check the "I acknowledge IAM..." Box.  Create Stack.
 
-This will take a while.  Wait for the "CREATE_COMPLETE" under planbeer-app. Go get a coffee.  App is now deployed.
+This will take a while.  Wait for the "CREATE_COMPLETE" under planbeer-app. ![Like this](https://github.com/duffyco/planbeerui/blob/master/images/CreateComplete.png?raw=true "Create Complete")
+
+We're done with deployment.   Enjoy a beer - you've earned it.
 
 <b> 4. Once complete look under the "Outputs" Tab and you'll see three URLs: </b>
 - EndpointServer: Put this one in your router in Step 5
 - EndpointUI: Click it and you'll go to the Plan B website
 - EndpointDatabase: Don't worry about this unless you have to.
+
+![Like this](https://github.com/duffyco/planbeerui/blob/master/images/Endpoints.png?raw=true "Endpoints")
 
 You can use the web app to import recipes and sessions via the UI.  
 
@@ -126,7 +130,7 @@ You can use the web app to import recipes and sessions via the UI.
 <b> 5a. Alternative [10 min]: </b> If you've got a Windows 10 Laptop it can probably act as a Wifi HotSpot - [Win10 Scripts](https://github.com/duffyco/planbeer/tree/master/support/Win10Hotspot)
 
 To check you've done this correctly: 
-- Click on the EndpointServer link.   
+- Click on the EndpointServer link. [Looks Like](https://github.com/duffyco/planbeerui/blob/master/images/ServerMain.png?raw=true "ServerMain")
 - Click past the "Untrusted Error".
 - Click on the UI Located Here Link.
 
